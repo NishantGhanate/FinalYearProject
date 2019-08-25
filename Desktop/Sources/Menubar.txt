@@ -1,0 +1,5 @@
+https://pythonprogramming.net/menubar-pyqt-tutorial/
+
+http://zetcode.com/gui/pyqt5/menustoolbars/
+
+https://pythonspot.com/pyqt5-menu/
