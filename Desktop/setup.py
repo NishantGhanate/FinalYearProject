@@ -66,8 +66,7 @@ class SmartSystemUI(QtWidgets.QMainWindow):
         self.timer.start(1)
         self.pushButtonStart.setEnabled(False)
         self.pushButtonStop.setEnabled(True)
-        
-    
+         
     # @staticmethod           
     def update_frame(self):
         ret,image = self.cap.read()
@@ -78,8 +77,7 @@ class SmartSystemUI(QtWidgets.QMainWindow):
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         self.displayImage(image,1)
         self.motionCapture(image)
-        
-        
+              
     def displayImage(self,img,window=1):
         qformat = QImage.Format_Indexed8
         qformat = QImage.Format_RGB888
@@ -125,8 +123,6 @@ class SmartSystemUI(QtWidgets.QMainWindow):
         # self.buttonSaveUid.setEnabled(True)
         self.pushButtonStop.setEnabled(False)
         
-        
-    
     def verifyButton(self):
         # self.pushButtonVerify.setEnabled(False)
         # check mode 
@@ -144,16 +140,7 @@ class SmartSystemUI(QtWidgets.QMainWindow):
         except Exception as e :
             print('{}'.format(e))
         return None
-        
-        
-        
-    
-    
-             
-        
-            
-        
-        
+          
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     smartSystemUI = SmartSystemUI()
