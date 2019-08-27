@@ -1,0 +1,8 @@
+https://learn.adafruit.com/multi-tasking-the-arduino-part-1/a-classy-solution
+https://maker.pro/arduino/projects/arduino-speaker
+
+ldr
+https://www.google.com/search?q=arduino+ldr+digital+pin&rlz=1C1CHBF_enIN860IN860&tbm=isch&source=iu&ictx=1&fir=Mxyks6f_C-E6sM%253A%252CJ-Shv9ygxcGeOM%252C_&vet=1&usg=AI4_-kRZpur3RHumLEjpvqYkCq9Dm4xX0A&sa=X&ved=2ahUKEwiBhKihgaPkAhUD63MBHVMyAGUQ9QEwAXoECAQQCQ#imgrc=gmhODaRfd9Ue7M:&vet=1
+
+servo
+https://www.google.com/search?rlz=1C1CHBF_enIN860IN860&tbm=isch&sa=1&ei=YRxlXZOsB77A3LUPl92RmAE&q=arduino+servo+motor&oq=arduino+servo+&gs_l=img.3.0.0l10.96319.98043..99663...0.0..0.113.716.2j5......0....1..gws-wiz-img.......35i39j0i67.oHncgkghYig#imgrc=KuUe081TMv7KmM:
