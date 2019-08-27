@@ -51,6 +51,8 @@ class SmartSystemUI(QtWidgets.QMainWindow):
         self.kernelSmooth = np.ones( (25,25),np.float32 ) / 625
         self.threshold = 7650000
         self.timeToday = datetime.now()
+        self._codec = cv2.VideoWriter_fourcc('M','J','P','G')
+        
         
         
     def starButton(self):
@@ -59,29 +61,35 @@ class SmartSystemUI(QtWidgets.QMainWindow):
         self.cap = cv2.VideoCapture(0)
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT,480)
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH,640)
-       
+        timestampDay =  datetime.now().strftime("%A- %d- %B %Y %I-%M-%S")
+        self.videoWriter = cv2.VideoWriter(self.videoPath + timestampDay + '.avi',self._codec, 15, ( 640,480) )
         # Setting up QLabel Timer On start init the  Update frame 
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_frame)
-        self.timer.start(1)
+        self.timer.start(0.1)
         self.pushButtonStart.setEnabled(False)
         self.pushButtonStop.setEnabled(True)
          
     # @staticmethod           
     def update_frame(self):
         ret,image = self.cap.read()
+        
         timeStamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         timestampDay =  datetime.now().strftime("%A, %d. %B %Y %I:%M:%S %p")
         cv2.putText(image,timestampDay,(200,450),cv2.FONT_HERSHEY_SIMPLEX , 0.7,(255,100,100),2,cv2.LINE_AA)
         
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        # # image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         self.displayImage(image,1)
         self.motionCapture(image)
+        # self.videoWriter.write(image)
+        
               
     def displayImage(self,img,window=1):
         qformat = QImage.Format_Indexed8
         qformat = QImage.Format_RGB888
-        outImage = QImage(img,img.shape[1],img.shape[0],img.strides[0],qformat)    
+        # # Since Opencv works on BGR we swap back to RBG channels
+        outImage = QImage(img,img.shape[1],img.shape[0],img.strides[0],qformat) 
+        outImage = outImage.rgbSwapped()   
         if window ==1:
             self.QlabelCamera.setPixmap(QPixmap.fromImage(outImage))
             self.QlabelCamera.setScaledContents(True)
@@ -97,7 +105,7 @@ class SmartSystemUI(QtWidgets.QMainWindow):
         # print(smoothed.shape)
         # print(self.blackImage.shape)
         
-        # Calcute the image difference if greater than Threshold store the image
+        # # Calcute the image difference if greater than Threshold store the image
         diff = cv2.absdiff(self.blackImage,fgmask)
         diff = diff.sum()
         currentTime =  datetime.now() 
@@ -108,16 +116,17 @@ class SmartSystemUI(QtWidgets.QMainWindow):
             self.logsCount += 1
             self.lcdNumber.display(self.logsCount)
             self.listWidgetLogs.addItem(timestampDay)
-            # Since Opencv read and writes in BGR format 
+            # # Since Opencv read and writes in BGR format 
             image = cv2.cvtColor(image,cv2.COLOR_RGB2BGR)
-            # cv2.imwrite(self.imagePath + currentTime + '.jpg' , image) 
+            # # cv2.imwrite(self.imagePath + currentTime + '.jpg' , image) 
             print('Image saved = {}'.format(self.imagePath + timestampDay + '.jpg'))
             
         cv2.imshow(' frame mask ' , fgmask)
                 
     def stopButton(self): 
-        # Release the camera resources and stop camera 
+        # # Release the camera resources and stop camera 
         self.cap.release()
+        self.videoWriter.release()
         self.timer.stop()
         self.pushButtonStart.setEnabled(True)
         # self.buttonSaveUid.setEnabled(True)
@@ -125,7 +134,7 @@ class SmartSystemUI(QtWidgets.QMainWindow):
         
     def verifyButton(self):
         # self.pushButtonVerify.setEnabled(False)
-        # check mode 
+        # # check mode 
         pass
     
     def saveLogButton(self):
