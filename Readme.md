@@ -4,12 +4,12 @@ Hi! i'm excited to start & share my final year project progression .
 
 # CheckList
 
-- [ ] Desktop
-    - [ ] Create UI in pyqt5 for python
-    - [ ] Bind with python code 
-    - [ ] Write UI functionality 
-    - [ ] Configurations store locally Read & Write
-    - [ ] Motion Capture store locally Video & Images
+- [x] Desktop
+    - [x] Create UI in pyqt5 for python
+    - [x] Bind with python code 
+    - [x] Write UI functionality 
+    - [x] Configurations store locally Read & Write
+    - [x] Motion Capture store locally Video & Images
     - [ ] Add Firebase and handle internet exception
 - [ ] Mobile App
     - [ ] Bind with Firebase
@@ -24,16 +24,5 @@ Hi! i'm excited to start & share my final year project progression .
 
 
 
-## UML diagram
-
-You can render UML diagrams using [Mermaid](https://mermaidjs.github.io/). For example, this will produce a sequence diagram:
-
-```mermaid
-graph TD
-A[UserSideApp] -- User Request --> B((Database))
-B -- Control/Notification -->A
-D -->B
-D --> C(Ariduno)
-B --> D[Desktop]
-C -- Serial Communication --> D
-```
+# Flow Diagram
+![](https://github.com/NishantGhanate/FinalYearProject/blob/master/Desktop/UI/Assests/FlowDiagram.png)

@@ -1,0 +1,5 @@
+https://firebase.google.com/docs/cloud-messaging/send-message
+"registration_ids": ["fcm_token1", "fcm_token2"]
+https://stackoverflow.com/questions/38808880/sending-notifications-in-to-multiple-users-fcm
+https://firebase.google.com/docs/cloud-messaging/send-message
+https://github.com/firebase/firebase-admin-python/blob/150a8551359f818ce5c2edf6acbc02d48ba98747/snippets/messaging/cloud_messaging.py#L24-L40
