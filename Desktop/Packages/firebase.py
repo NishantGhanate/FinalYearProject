@@ -10,16 +10,18 @@ from firebase_admin import messaging
 
 # Setting up firebase service account
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
-SericeKey = SCRIPT_DIR + os.path.sep + 'Config' + os.path.sep + 'Service.json'
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = SericeKey
+
+
+# SericeKey = SCRIPT_DIR + os.path.sep + 'Config' + os.path.sep + 'Service.json'
+# print(SericeKey)
+# os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = SericeKey
 
 class Firebase():
     
-    def __init__(self,uid):
-        self.__uid = uid
+    def __init__(self):
         self.__host = 'www.google.com'
         self.__user = 'users'
-        self.getFcmToken()
+        #self.getFcmToken()
         self.firestoreClient = firestore.Client()
         
     def getPingTest(self):
@@ -32,10 +34,15 @@ class Firebase():
             conn.close()
             return False
         
-    def getFcmToken(self):
-        db = self.firestoreClient
-        doc_ref = db.collection(self.__user).document(self.__uid)
-        self.__fcmToken = doc_ref
+    def verifyUser(self,uid):
+        self.__uid = uid
+        try :
+            db = self.firestoreClient
+            doc_ref = db.collection(self.__user).document(self.__uid)
+            self.__fcmToken = doc_ref.stream()
+            if self.__fcmToken:
+                return True
+        return False
     
     def getUserAction(self):
         pass
@@ -59,7 +66,7 @@ class Firebase():
     def setImageFireStore(self,path):
        # Add a new document
         db = self.firestoreClient
-        doc_ref = db.collection(self.__user).document(self.__uid).collection('Images').
+        doc_ref = db.collection(self.__user).document(self.__uid).collection('Images')
         file = open(path, 'rb')
         blob = file.read()
         file.close()

@@ -4,12 +4,16 @@ import cv2
 import numpy as np
 
 from datetime import datetime , timedelta
-
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 from PyQt5.QtCore import QTimer
 from PyQt5.QtGui import QIcon, QImage, QPixmap
+from Packages.firebase import Firebase
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
+
+# Setting up firebase service account into to env path
+SericeKey = SCRIPT_DIR + os.path.sep + 'Config' + os.path.sep + 'Service.json'
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = SericeKey
 
 class SmartSystemUI(QtWidgets.QMainWindow):
     
@@ -39,6 +43,10 @@ class SmartSystemUI(QtWidgets.QMainWindow):
         self.pushButtonVerify.clicked.connect(self.verifyButton)  
         self.pushButtonSaveLog.clicked.connect(self.saveLogButton)
         self.logsCount = 0
+        self.onlineMode = False
+        self.userExists = False
+        self.labelMode.setText('OFFLINE-MODE')
+        self.Firebase =  Firebase()
         self.load(self)
     
     # Not neceassy will be usefull in future 
@@ -53,16 +61,27 @@ class SmartSystemUI(QtWidgets.QMainWindow):
         self.timeToday = datetime.now()
         self._codec = cv2.VideoWriter_fourcc('M','J','P','G')
         
-        
-        
     def starButton(self):
+        if self.radioButtonOnline.isChecked():
+            # Check if user is online if yes proceed
+            self.onlineMode = self.Firebase.getPingTest()
+            if self.onlineMode and self.checks:
+                self.labelMode.setText('STATUS : ONLINE')
+                self.pushButtonVerify.setEnabled(False)
+                self.startRecording()  
+            else:
+                self.listWidgetLogs.addItem('Please check your internet connection')
+        self.startRecording() 
+        self.labelMode.setText('STATUS : OFFLINE ') 
+        self.listWidgetLogs.addItem('OFFLINE - MODE : '+ self.timeToday)
         
+    def startRecording(self):          
         # Setting up camera req
         self.cap = cv2.VideoCapture(0)
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT,480)
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH,640)
         timestampDay =  datetime.now().strftime("%A- %d- %B %Y %I-%M-%S")
-        self.videoWriter = cv2.VideoWriter(self.videoPath + timestampDay + '.avi',self._codec, 15, ( 640,480) )
+        # self.videoWriter = cv2.VideoWriter(self.videoPath + timestampDay + '.avi',self._codec, 15, ( 640,480) )
         # Setting up QLabel Timer On start init the  Update frame 
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_frame)
@@ -82,8 +101,7 @@ class SmartSystemUI(QtWidgets.QMainWindow):
         self.displayImage(image,1)
         self.motionCapture(image)
         # self.videoWriter.write(image)
-        
-              
+             
     def displayImage(self,img,window=1):
         qformat = QImage.Format_Indexed8
         qformat = QImage.Format_RGB888
@@ -118,25 +136,35 @@ class SmartSystemUI(QtWidgets.QMainWindow):
             self.listWidgetLogs.addItem(timestampDay)
             # # Since Opencv read and writes in BGR format 
             image = cv2.cvtColor(image,cv2.COLOR_RGB2BGR)
-            # # cv2.imwrite(self.imagePath + currentTime + '.jpg' , image) 
-            print('Image saved = {}'.format(self.imagePath + timestampDay + '.jpg'))
-            
+            capturedImage = self.imagePath + timestampDay + '.jpg'
+            # # cv2.imwrite(capturedImage , image) 
+            print('Image saved = {}'.format(capturedImage))
+            if self.Firebase.getPingTest() and self.userExists:
+                # self.Firebase.setImageFireStore(capturedImage)
+                # self.Firebase.setNotification() 
         cv2.imshow(' frame mask ' , fgmask)
                 
     def stopButton(self): 
         # # Release the camera resources and stop camera 
         self.cap.release()
-        self.videoWriter.release()
+        # self.videoWriter.release()
         self.timer.stop()
         self.pushButtonStart.setEnabled(True)
-        # self.buttonSaveUid.setEnabled(True)
+        self.pushButtonVerify.setEnabled(True)
         self.pushButtonStop.setEnabled(False)
         
     def verifyButton(self):
-        # self.pushButtonVerify.setEnabled(False)
         # # check mode 
-        pass
-    
+        uid = self.lineEditUid.text()
+        if uid not None:
+            # Call firebase and verify user 
+            user = self.Firebase.verifyUser(uid)
+            if user:
+                self.userExists = True
+            else:
+                self.userExists = False
+                    
+
     def saveLogButton(self):
         try:
             time = self.timeToday.strftime("%A_%d_%B_%Y_%I-%M-%S-%p")

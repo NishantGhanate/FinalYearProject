@@ -10,7 +10,7 @@ Hi! i'm excited to start & share my final year project progression .
     - [x] Write UI functionality 
     - [x] Configurations store locally Read & Write
     - [x] Motion Capture store locally Video & Images
-    - [ ] Add Firebase and handle internet exception
+    - [x] Add Firebase and handle internet exception
 - [ ] Mobile App
     - [ ] Bind with Firebase
     - [ ] Internet Expection and Offline 

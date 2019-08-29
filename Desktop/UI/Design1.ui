@@ -12,22 +12,38 @@
   </property>
   <property name="maximumSize">
    <size>
-    <width>1366</width>
+    <width>1133</width>
     <height>726</height>
    </size>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">
+
+QMainWindow#MainWindow
+{
+
+
+}
+</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QLabel" name="QlabelCamera">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>40</x>
       <y>70</y>
       <width>680</width>
       <height>480</height>
      </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Sunken</enum>
     </property>
     <property name="text">
      <string/>
@@ -37,7 +53,7 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>640</y>
+      <y>650</y>
       <width>101</width>
       <height>31</height>
      </rect>
@@ -50,7 +66,7 @@
     <property name="geometry">
      <rect>
       <x>170</x>
-      <y>640</y>
+      <y>650</y>
       <width>101</width>
       <height>31</height>
      </rect>
@@ -89,26 +105,26 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>600</y>
-      <width>82</width>
-      <height>17</height>
+      <y>570</y>
+      <width>131</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="text">
-     <string>Online Mode</string>
+     <string>ONLINE - MODE</string>
     </property>
    </widget>
    <widget class="QRadioButton" name="radioButtonOffline">
     <property name="geometry">
      <rect>
-      <x>170</x>
+      <x>40</x>
       <y>600</y>
-      <width>82</width>
-      <height>17</height>
+      <width>101</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="text">
-     <string>Offline Mode</string>
+     <string>OFFLINE  - MODE</string>
     </property>
    </widget>
    <widget class="QTextEdit" name="textEdit">
@@ -165,6 +181,28 @@
       <width>64</width>
       <height>23</height>
      </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelMode">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>30</y>
+      <width>231</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Sunken</enum>
+    </property>
+    <property name="text">
+     <string>STATUS : OFFLINE  - MODE</string>
     </property>
    </widget>
   </widget>
