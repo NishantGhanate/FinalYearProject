@@ -1,4 +1,10 @@
-
+desktop.ini
+.vscode
+/.vscode
+.pylintrc
+/Desktop/Congig/Service.json
+# ignore a file type
+*.json
 /.vscode
 .vscode
 .pylintrc
