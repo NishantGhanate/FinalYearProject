@@ -5,3 +5,5 @@ desktop.ini
 /Desktop/Congig/Service.json
 # ignore a file type
 *.json
+/MobileApp
+
