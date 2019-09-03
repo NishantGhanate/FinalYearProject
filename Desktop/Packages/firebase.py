@@ -42,7 +42,8 @@ class Firebase():
             self.__fcmToken = doc_ref.stream()
             if self.__fcmToken:
                 return True
-        return False
+        except Exception as e:
+            return False
     
     def getUserAction(self):
         pass

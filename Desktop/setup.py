@@ -2,6 +2,7 @@ import os
 import sys
 import cv2
 import numpy as np
+import re 
 
 from datetime import datetime , timedelta
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
@@ -73,7 +74,7 @@ class SmartSystemUI(QtWidgets.QMainWindow):
                 self.listWidgetLogs.addItem('Please check your internet connection')
         self.startRecording() 
         self.labelMode.setText('STATUS : OFFLINE ') 
-        self.listWidgetLogs.addItem('OFFLINE - MODE : '+ self.timeToday)
+        self.listWidgetLogs.addItem('OFFLINE - MODE : '+ str(self.timeToday))
         
     def startRecording(self):          
         # Setting up camera req
@@ -131,17 +132,16 @@ class SmartSystemUI(QtWidgets.QMainWindow):
             print(' diff = {} , self.threshold = {} '.format(diff,self.threshold))
             self.timeToday = currentTime
             timestampDay =  datetime.now().strftime("%A %d %B %Y %I-%M-%S-%p")
-            self.logsCount += 1
-            self.lcdNumber.display(self.logsCount)
-            self.listWidgetLogs.addItem(timestampDay)
+            self.logsWidget(timestampDay)
+            # self.listWidgetLogs.addItem(timestampDay)
             # # Since Opencv read and writes in BGR format 
             image = cv2.cvtColor(image,cv2.COLOR_RGB2BGR)
             capturedImage = self.imagePath + timestampDay + '.jpg'
             # # cv2.imwrite(capturedImage , image) 
             print('Image saved = {}'.format(capturedImage))
-            if self.Firebase.getPingTest() and self.userExists:
-                # self.Firebase.setImageFireStore(capturedImage)
-                # self.Firebase.setNotification() 
+            # if self.Firebase.getPingTest() and self.userExists:
+            #     self.Firebase.setImageFireStore(capturedImage)
+            #     self.Firebase.setNotification() 
         cv2.imshow(' frame mask ' , fgmask)
                 
     def stopButton(self): 
@@ -156,15 +156,21 @@ class SmartSystemUI(QtWidgets.QMainWindow):
     def verifyButton(self):
         # # check mode 
         uid = self.lineEditUid.text()
-        if uid not None:
+        if len(uid) > 25 and uid.isalnum():
             # Call firebase and verify user 
             user = self.Firebase.verifyUser(uid)
             if user:
                 self.userExists = True
             else:
                 self.userExists = False
-                    
+        else:
+            self.logsWidget('Invalid UID '+ str(uid))         
 
+    def logsWidget(self,msg):
+        self.logsCount += 1
+        self.lcdNumber.display(self.logsCount)
+        self.listWidgetLogs.addItem(str(msg))   
+            
     def saveLogButton(self):
         try:
             time = self.timeToday.strftime("%A_%d_%B_%Y_%I-%M-%S-%p")
