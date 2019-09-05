@@ -1,14 +1,15 @@
 
+//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:smart_app/pages/contacts_page.dart';
+import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 
+import 'package:smart_app/pages/contacts_page.dart';
+import 'package:smart_app/pages/login_page.dart';
 import 'package:smart_app/pages/settings_page.dart';
 import 'package:smart_app/tabpages/images_page.dart';
 import 'package:smart_app/tabpages/notificaton_page.dart';
 import 'package:smart_app/tabpages/sensors_page.dart';
-//import 'package:smart_app/services/auth_service.dart';
-//import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
+import 'package:smart_app/services/auth_service.dart';
 
 Color mainColor = Colors.red[800];
 
@@ -20,17 +21,17 @@ class ProfilePage extends StatefulWidget {
 //  final BaseAuth auth;
   final String userId;
 
-
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStateMixin  {
-  TabController tabController;
-
+   TabController tabController;
+   AuthService authService = new AuthService();
+//   FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
-  void initState() {
+  void initState()  {
     super.initState();
     // TODO : Add tab pages count length
     tabController = new TabController(length: 3, vsync: this);
@@ -41,11 +42,13 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
     super.dispose();
     tabController.dispose();
   }
-  var pages = [new ImagesPage(),new NotificationPage() , new SensorsPage()];
+
+  // Sets current active page
   var currentPage;
 
   @override
   Widget build(BuildContext context) {
+    var pages = [new ImagesPage(widget.userId) , new NotificationPage(widget.userId) , new SensorsPage(widget.userId) ];
     return Scaffold(
       appBar: AppBar(
         title: Text('Smart Security'),
@@ -54,6 +57,9 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
             IconButton(
               icon: Icon(Icons.clear),
               onPressed:() {
+                 authService.signOut(context);
+                var route = new MaterialPageRoute(builder: (context) => LoginPage());
+                Navigator.of(context).push(route);
               },
             ),
           ],
@@ -65,7 +71,16 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
 
             DrawerHeader(
               curve: Curves.fastOutSlowIn,
-              child: Text('Drawer Header'),
+              child: Column(
+                children: <Widget>[
+                  CircleAvatar(
+                    backgroundImage : AssetImage('assets/images/google_logo.png'),
+                    radius: 40,
+                  ),
+                  new Divider(),
+                  Text(widget.userId ,style: TextStyle(fontSize: 10),)
+                ],
+              ),
               decoration: BoxDecoration(
                 color: mainColor,
               ),
@@ -76,20 +91,20 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
               title: Text('Contacts'),
               onTap: () {
                 Navigator.pop(context);
-                var route = new MaterialPageRoute(builder: (context) => ContactsPage());
+                var route = new MaterialPageRoute(builder: (context) => ContactsPage(widget.userId));
                 Navigator.of(context).push(route);
               },
             ),
-            new Divider(),
-            ListTile(
-              leading: Icon(Icons.account_circle),
-              title: Text('List 2'),
-              onTap: () {
-                Navigator.pop(context);
-//                var route = new MaterialPageRoute(builder: (context) => AboutApp());
-//                Navigator.of(context).push(route);
-              },
-            ),
+//            new Divider(),
+//            ListTile(
+//              leading: Icon(Icons.account_circle),
+//              title: Text('List 2'),
+//              onTap: () {
+//                Navigator.pop(context);
+////                var route = new MaterialPageRoute(builder: (context) => AboutApp());
+////                Navigator.of(context).push(route);
+//              },
+//            ),
             new Divider(),
             ListTile(
               leading: Icon(Icons.settings),

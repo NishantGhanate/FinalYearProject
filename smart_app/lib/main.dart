@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:smart_app/pages/login_page.dart';
-
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:smart_app/pages/root_page.dart';
+import 'package:smart_app/services/auth_service.dart';
 
 void main() => runApp(MyApp());
 
@@ -16,7 +18,7 @@ class MyApp extends StatelessWidget {
         // new
       ),
 
-      home: LoginPage(),
+      home: RootPage(auth: new AuthService()),
     );
   }
 }

@@ -1,0 +1,10 @@
+users - uid - images - {  {timestamp : image, timestamp : image } 
+
+      - deviceoOnline -  { app : timestamp }
+                      -  { desktop : timestamp }
+
+       - fcmToken - { tpken : token , platform : , createdAt : '' }
+
+       - action - { }
+
+       - sensors - {ldr : bool , pir : bool , buzzer : bool , led : bool}

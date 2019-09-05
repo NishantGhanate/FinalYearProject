@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_app/pages/profile_page.dart';
+import 'package:smart_app/services/auth_service.dart';
 //import 'package:smart_app/services/auth_service.dart';
 
 
@@ -11,7 +12,7 @@ class LoginPage extends StatefulWidget{
 }
 
 class _LoginPageState extends State<LoginPage> {
-//  AuthService authService = new AuthService();
+  AuthService authService = new AuthService();
 //  BaseAuth auth;
   String userId;
 
@@ -68,19 +69,18 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
+
   void _login() async {
-//    String uid = await authService.googleSingIn();
-//    print(uid);
-//    if(uid != null){
-//      var route = new MaterialPageRoute(builder: (context) => ProfilePage(userId : uid , auth: auth));
-//      Navigator.of(context).push(route);
-//    }
-
-    var route = new MaterialPageRoute(builder: (context) => ProfilePage(userId : 's' ));
+    String uid = await authService.googleSingIn();
+    print(uid);
+    if (uid != null) {
+      var route = new MaterialPageRoute(
+          builder: (context) => ProfilePage(userId: uid));
       Navigator.of(context).push(route);
-
-
-
+    }
   }
+
+
 
 }
