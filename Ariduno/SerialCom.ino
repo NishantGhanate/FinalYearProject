@@ -7,17 +7,17 @@ class SerialCom
     Servo myservoX , myservoY; 
 
     public:
-    SerialCom(int p , int l, int b , int x , int y)
+    SerialCom(int pir , int ldr, int buzz ,int temp ,int servox , int servoy)
     {
-        pirSenorPin = p;
-        ldrPin = l;
-        buzzerPin = b;
+        pirSenorPin = pir;
+        ldrPin = ldr;
+        buzzerPin = buzz;
 
         pinMode(pirSenorPin,INPUT);
         pinMode(ldrPin,INPUT);
         pinMode(ldrPin,OUTPUT);
-        myservoX.attach(x);
-        myservoY.attach(y);
+        myservoX.attach(servox);
+        myservoY.attach(servoy);
     }
 
     int getPirValue()
@@ -51,7 +51,6 @@ class SerialCom
         noTone(buzzerPin);
         
     }
-
     void setServo(int posX , int posY)
     {
         myservoX.write(posX);
@@ -60,8 +59,9 @@ class SerialCom
     
 };
 
-// Pass pin numbers
-SerialCom serialCom( p = 1, l = 2 , b = 3, x = 4 ,y = 5 );
+// Sensors pin numbers 
+
+SerialCom serialCom( pir = 1, ldr = 2 , buzz = 3, temp = 5, x = 5 ,y = 6 );
 int pirVlaue , intLdrValue ;
 // Code execution starts fom here
 void setup()
