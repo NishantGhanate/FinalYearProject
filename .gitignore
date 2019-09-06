@@ -6,4 +6,5 @@ desktop.ini
 # ignore a file type
 *.json
 /MobileApp
+/smart_app
 
