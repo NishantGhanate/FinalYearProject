@@ -7,8 +7,8 @@ import json
 
 from datetime import datetime , timedelta
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
-from PyQt5.QtCore import QTimer
-from PyQt5.QtGui import QIcon, QImage, QPixmap
+from PyQt5.QtCore import QTimer , QSize
+from PyQt5.QtGui import QIcon, QImage, QPixmap , QPalette , QBrush
 from Packages.firebase import Firebase
 
 
@@ -34,14 +34,18 @@ class SmartSystemUI(QtWidgets.QMainWindow):
             uic.loadUi(ui_path +'Design1.ui',self)
             self.setWindowIcon(QIcon(icon_path)) 
             
+            # camerLabel_path =  ui_path + os.path.sep + 'Assests'+ os.path.sep +'compute.png'
+            # pixmap = QPixmap(icon_path)
+            # self.QlabelCamera.setPixmap(pixmap)
 
-            camerLabel_path =  ui_path + os.path.sep + 'Assests'+ os.path.sep +'compute.png'
-            pixmap = QPixmap(camerLabel_path)
-            self.QlabelCamera.setPixmap(pixmap)
+            backround = ui_path + os.path.sep + 'Assests'+ os.path.sep +'download.png'
+            oImage = QImage(backround)
+            palette = QPalette()
+            sImage = oImage.scaled(QSize(1366,768))                   # resize Image to widgets size
+            palette = QPalette()
+            palette.setBrush(10, QBrush(sImage))                     # 10 = Windowrole
+            self.setPalette(palette)
             
-            
-            
-             
             # raise Exception('UI file not found ' + str(ui_path) )   
         except Exception as e :
             print('{}'.format(e))
@@ -58,9 +62,9 @@ class SmartSystemUI(QtWidgets.QMainWindow):
         self.userExists = False
         self.labelMode.setText('OFFLINE-MODE')
         self.load(self)
-        a = self.rdConfig(data='None',mode='r')
-        if a != None:
-            self.lineEditUid.setText(a['uid'])
+        user = self.rdConfig(data='None',mode='r')
+        if user != None:
+            self.lineEditUid.setText(user['uid'])
     
     # Not neceassy will be usefull in future 
     QtCore.pyqtSlot()   
@@ -76,8 +80,7 @@ class SmartSystemUI(QtWidgets.QMainWindow):
         self._kernel = np.ones((2,2),np.uint8)
         self._kernelSmooth = np.ones( (20,20),np.float32 ) / 400
         self.Firebase = Firebase(serviceKey = SERVICE_KEY)
-        
-        
+         
     def starButton(self):
         if self.radioButtonOnline.isChecked():
             # Check if user is online if yes proceed
@@ -109,11 +112,9 @@ class SmartSystemUI(QtWidgets.QMainWindow):
     # @staticmethod           
     def update_frame(self):
         ret,image = self.cap.read()
-        
         timeStamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         timestampDay =  datetime.now().strftime("%A, %d. %B %Y %I:%M:%S %p")
         cv2.putText(image,timestampDay,(170,450),cv2.FONT_HERSHEY_SIMPLEX , 0.5,(255,100,100),2,cv2.LINE_AA)
-        
         # # image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         self.displayImage(image,1)
         self.motionCapture(image)
@@ -133,7 +134,6 @@ class SmartSystemUI(QtWidgets.QMainWindow):
         imgray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         smoothed = cv2.filter2D(imgray,-1,self._kernelSmooth)
         fgmask = self.backgroundSubtracter.apply(smoothed)
-        
         # # Calcute the image difference if greater than Threshold store the image
         diff = cv2.absdiff(self.blackImage,fgmask)
         diff = diff.sum()
@@ -144,9 +144,7 @@ class SmartSystemUI(QtWidgets.QMainWindow):
             self.timeToday = currentTime
             timestampDay =  datetime.now().strftime("%A %d %B %Y %I-%M-%S-%p")
             self.logsWidget(timestampDay)
-        
-            # # # Since Opencv read and writes in BGR format 
-            # image = cv2.cvtColor(image,cv2.COLOR_RGB2BGR)
+    
             capturedImage = IMAGE_PATH + timestampDay + '.jpg'
             cv2.imwrite(capturedImage , image) 
             print('Image saved = {}'.format(capturedImage))
@@ -158,19 +156,18 @@ class SmartSystemUI(QtWidgets.QMainWindow):
     def stopButton(self): 
         # # Release the camera resources and stop camera 
         self.cap.release()
-        # self.videoWriter.release()
+        self.videoWriter.release()
         self.timer.stop()
         self.pushButtonStart.setEnabled(True)
         self.pushButtonVerify.setEnabled(True)
         self.pushButtonStop.setEnabled(False)
         
     def verifyButton(self):
-        # # check mode
-        # self.Firebase.PostFireStore() 
         uid = self.lineEditUid.text()
         print(uid)
         if len(uid) > 25 and uid.isalnum():
             # Call firebase and verify user 
+            self.logsWidget('Verifying user please wait ....')
             user = self.Firebase.verifyUser(uid)
             if user:
                 self.userExists = True
@@ -200,8 +197,7 @@ class SmartSystemUI(QtWidgets.QMainWindow):
             print(msg)
         except Exception as e :
             print('{}'.format(e))
-        return None
-    
+        
     # ReadWrite user congig jsON                   
     def rdConfig(self,data,mode):
         print(data)
@@ -212,12 +208,11 @@ class SmartSystemUI(QtWidgets.QMainWindow):
                     json.dump(data, f)
             if mode == 'r':
                 with open(USER_CONFIG, 'r') as f:
-                    return json.load(f)
-                
+                    return json.load(f)          
         except OSError as e:
             self.logsWidget('Before starting verify uid')
             print('{}'.format(e))
-            return None
+           
             
               
 if __name__ == "__main__":

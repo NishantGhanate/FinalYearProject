@@ -2,8 +2,8 @@
 
 class SerialCom
 {
-    int pirSenorPin, ldrPin , buzzerPin;
-    int pirVlaue , ldrValue , buzzValue = 0;
+    int pirSenorPin, ldrPin , buzzerPin , tempPin;
+    int pirVlaue , ldrValue , buzzValue , tempValue = 0;
     Servo myservoX , myservoY; 
 
     public:
@@ -12,10 +12,15 @@ class SerialCom
         pirSenorPin = pir;
         ldrPin = ldr;
         buzzerPin = buzz;
+        tempPin = temp;
 
+        // Analog input 
         pinMode(pirSenorPin,INPUT);
         pinMode(ldrPin,INPUT);
-        pinMode(ldrPin,OUTPUT);
+        pinMode(tempPin,INPUT);
+
+        // Digital pin modes
+        pinMode(buzzerPin,OUTPUT);
         myservoX.attach(servox);
         myservoY.attach(servoy);
     }
@@ -30,6 +35,11 @@ class SerialCom
     {
         ldrValue = analogRead(pirSenorPin);
         return ldrValue;
+    }
+
+    int getTempValue(){
+        tempValue = analogRead(pirSenorPin);
+        return tempValue;
     }
 
     void getSerialInput()

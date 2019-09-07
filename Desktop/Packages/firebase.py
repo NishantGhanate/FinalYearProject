@@ -10,12 +10,6 @@ from firebase_admin import messaging
 import firebase_admin
 
 # Setting up firebase service account
-SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
-
-
-# SericeKey = SCRIPT_DIR + os.path.sep + 'Config' + os.path.sep + 'Service.json'
-# print(SericeKey)
-
 
 class Firebase:
     
