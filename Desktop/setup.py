@@ -61,6 +61,7 @@ class SmartSystemUI(QtWidgets.QMainWindow):
         self.onlineMode = False
         self.userExists = False
         self.labelMode.setText('OFFLINE-MODE')
+        self.Firebase = Firebase(serviceKey = SERVICE_KEY)
         self.load(self)
         user = self.rdConfig(data='None',mode='r')
         if user != None:
@@ -79,7 +80,7 @@ class SmartSystemUI(QtWidgets.QMainWindow):
         self._codec = cv2.VideoWriter_fourcc('M','J','P','G')
         self._kernel = np.ones((2,2),np.uint8)
         self._kernelSmooth = np.ones( (20,20),np.float32 ) / 400
-        self.Firebase = Firebase(serviceKey = SERVICE_KEY)
+        
          
     def starButton(self):
         if self.radioButtonOnline.isChecked():
@@ -148,10 +149,10 @@ class SmartSystemUI(QtWidgets.QMainWindow):
             capturedImage = IMAGE_PATH + timestampDay + '.jpg'
             cv2.imwrite(capturedImage , image) 
             print('Image saved = {}'.format(capturedImage))
-            # if self.Firebase.getPingTest() and self.userExists:
-            #     self.Firebase.setImageFireStore(capturedImage,timestampDay)
-            #     self.Firebase.setNotification() 
-        cv2.imshow('Backend', fgmask)
+            if self.Firebase.getPingTest() and self.userExists:
+                self.Firebase.setImageFireStore(capturedImage,timestampDay)
+                self.Firebase.setNotification(timestampDay) 
+        # cv2.imshow('Backend', fgmask)
             
     def stopButton(self): 
         # # Release the camera resources and stop camera 
@@ -165,12 +166,11 @@ class SmartSystemUI(QtWidgets.QMainWindow):
     def verifyButton(self):
         uid = self.lineEditUid.text()
         print(uid)
-        if len(uid) > 25 and uid.isalnum():
+        self.logsWidget('Verifying user please wait ....')
+        if len(uid) > 25 and uid.isalnum() and self.Firebase.getPingTest():
             # Call firebase and verify user 
-            self.logsWidget('Verifying user please wait ....')
-            user = self.Firebase.verifyUser(uid)
-            if user:
-                self.userExists = True
+            self.userExists = self.Firebase.verifyUser(uid)
+            if self.userExists:
                 self.logsWidget('User Verified =  '+ str(uid)) 
                 Data = {'uid' : uid}
                 self.rdConfig(data = Data , mode='w')

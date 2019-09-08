@@ -39,8 +39,8 @@ class Firebase:
         self.__uid = uid
         print('Recivied in Firebase '.format(uid))
         try :
-            db = firestore.Client()
-            doc_ref = db.collection(self.__user).document(uid)
+            # db = firestore.Client()
+            doc_ref = self.db.collection(self.__user).document(uid)
             self.__data = doc_ref.get()
             # for d in self.__data:
             #     print(u"{} u{}".format(d.id,d.to_dict() ))
@@ -66,31 +66,32 @@ class Firebase:
         pass
     
     
-    def setNotification(self):
-        message = messaging.Message(
-        data={
-            'score': '850',
-            'time': '2:45',
-        },
-        token=self.getFcmToken,
-        )
+    def setNotification(self,timeStamp):
+        # message = messaging.Message(
+        # data={
+        #     'score': '850',
+        #     'time': '2:45',
+        # },
+        # token=self.getFcmToken, #  registration token
+        # )
         
-        # Send a message to the device corresponding to the provided
-        # registration token.
-        response = messaging.send(message)
+        # # Send a message to the device corresponding to the provided
+        # response = messaging.send(message)
         # Response is a message ID string.
-        print('Successfully sent message:', response)
-                
+        # print('Successfully sent message:', response)
+        doc_ref = self.db.collection(self.__user).document(self.__uid).collection('notifications').document(timeStamp)
+        doc_ref.set({"title": "Alert ! " , "body":timeStamp})
+        
+               
     def setImageFireStore(self,path,timestampDay):
        # Add a new document
-        db = firestore.client()
-        doc_ref = db.collection(self.__user).document(self.__uid).collection('images').document(timestampDay)
+        # db = firestore.client()
+        doc_ref = self.db.collection(self.__user).document(self.__uid).collection('images').document(timestampDay)
         file = open(path, 'rb')
         blob = file.read()
         file.close()
         doc_ref.set({"blob":blob})
      
-    
     
     
 
