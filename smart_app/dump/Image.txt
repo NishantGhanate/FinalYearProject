@@ -1,0 +1,25 @@
+//    var image = document['blob'].toString();
+//    Uint8List pngBytes = document['blob'].buffer.asUint8List();
+//    List<int> list = document['blob'].codeUnits;
+//    Uint8List bytes = Uint8List.fromList(document['blob']);
+//    String string = String.fromCharCodes(bytes);
+
+
+
+Uint8List bytes = base64Decode(document['blob']);
+    return Card(
+      shape: new RoundedRectangleBorder(
+          side: new BorderSide(color: Colors.grey[700], width: 2.0),
+          borderRadius: BorderRadius.circular(4.0)),
+      elevation: 5.0,
+      child: new Container(
+        alignment: Alignment.center,
+//          child: new Text( document.documentID +'\n' +document['value'] , style: TextStyle(fontSize: 10),),
+        child: Column(
+          children: <Widget>[
+            new Image.memory(bytes),
+            new Text( document.documentID  , style: TextStyle(fontSize: 10),),
+          ],
+        ),
+      ),
+    );

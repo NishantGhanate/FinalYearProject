@@ -1,5 +1,6 @@
 
 //import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 
@@ -28,13 +29,20 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStateMixin  {
    TabController tabController;
    AuthService authService = new AuthService();
-//   FirebaseAuth _auth = FirebaseAuth.instance;
+   FirebaseAuth _auth = FirebaseAuth.instance;
+   FirebaseUser _firebaseUseruser;
+
 
   @override
   void initState()  {
     super.initState();
     // TODO : Add tab pages count length
     tabController = new TabController(length: 3, vsync: this);
+
+  }
+
+   firebaseUser() async{
+   return  await _auth.currentUser();
   }
 
   @override
@@ -49,6 +57,7 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
   @override
   Widget build(BuildContext context) {
     var pages = [new ImagesPage(widget.userId) , new NotificationPage(widget.userId) , new SensorsPage(widget.userId) ];
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Smart Security'),
@@ -74,6 +83,7 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
               child: Column(
                 children: <Widget>[
                   CircleAvatar(
+//                      backgroundImage :  _firebaseUseruser.photoUrl  == null   ? AssetImage('assets/images/google_logo.png') : NetworkImage(_firebaseUseruser.photoUrl),
                     backgroundImage : AssetImage('assets/images/google_logo.png'),
                     radius: 40,
                   ),

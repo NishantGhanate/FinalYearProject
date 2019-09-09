@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_app/services/auth_service.dart';
 
@@ -24,7 +25,7 @@ class RootPage extends StatefulWidget {
 class _RootPageState extends State<RootPage>{
   String _userId = "";
   AuthStatus authStatus = AuthStatus.NOT_DETERMINED;
-
+  Firestore _db = Firestore.instance;
   // Setting set once tapped on button and logged in
   @override
   void initState() {
@@ -33,6 +34,7 @@ class _RootPageState extends State<RootPage>{
       setState(() {
         if (user != null) {
           _userId = user?.uid;
+          _db.settings(persistenceEnabled: true);
         }
         authStatus =
         user?.uid == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;

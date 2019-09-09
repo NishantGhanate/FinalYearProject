@@ -1,6 +1,9 @@
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:async';
+
+//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class SensorsPage extends StatefulWidget{
 
@@ -16,6 +19,11 @@ class SensorsPage extends StatefulWidget{
 class _SensorsPageState extends State<SensorsPage> with AutomaticKeepAliveClientMixin<SensorsPage> {
 
   var sensorList = ['1','2','3'];
+  List<Todo> _todoList;
+  final FirebaseDatabase _database = FirebaseDatabase.instance;
+  StreamSubscription<Event> _onTodoAddedSubscription;
+  StreamSubscription<Event> _onTodoChangedSubscription;
+  Query _todoQuery;
 
   @override
   // TODO: implement wantKeepAlive
@@ -25,56 +33,139 @@ class _SensorsPageState extends State<SensorsPage> with AutomaticKeepAliveClient
   void initState() {
     // TODO: implement firebase images list and listner
     super.initState();
+    _todoList = new List();
+    _todoQuery = _database
+        .reference()
+        .child("users")
+        .child(widget.userId)
+        .child("sensors");
+//    _todoQuery.once().then((DataSnapshot snapshot) {
+//      print('Data : ${snapshot.value}');
+//    });
+    _onTodoAddedSubscription = _todoQuery.onChildAdded.listen(_onEntryAdded);
+    _onTodoChangedSubscription = _todoQuery.onChildChanged.listen(_onEntryChanged);
+
+  }
+
+  @override
+
+  void dispose() {
+    _onTodoAddedSubscription.cancel();
+    _onTodoChangedSubscription.cancel();
+    super.dispose();
+  }
+
+  _onEntryAdded(Event event) {
+    setState(() {
+      _todoList.add(Todo.fromSnapshot(event.snapshot));
+    });
+  }
+
+  _onEntryChanged(Event event) {
+    var oldEntry = _todoList.singleWhere((entry) {
+      return entry.key == event.snapshot.key;
+    });
+
+    setState(() {
+      _todoList[_todoList.indexOf(oldEntry)] = Todo.fromSnapshot(event.snapshot);
+    });
+  }
+
+  _updateTodo(Todo todo){
+    //Toggle completed
+    todo.value = (todo.value);
+    if (todo != null) {
+      _database.reference().child("user").child(todo.key).set(todo.toJson());
+    }
   }
 
 
-  Widget _buildList(BuildContext context, DocumentSnapshot document) {
-//    print(document.documentID);
-//    print(document['value']);
-    return Card(
-      shape: new RoundedRectangleBorder(
-          side: new BorderSide(color: Colors.grey[700], width: 2.0),
-          borderRadius: BorderRadius.circular(4.0)),
-      elevation: 5.0,
-      child: new Container(
-        alignment: Alignment.center,
-//          child: new Text( document.documentID +'\n' +document['value'] , style: TextStyle(fontSize: 10),),
-           child: Column(
-             children: <Widget>[
-               new Image.network('https://picsum.photos/250?image=9',scale: 10,),
+  Widget _buildList(BuildContext context, int index) {
 
-               new Text( document.documentID +'\n' +document['value'] , style: TextStyle(fontSize: 10),),
-             ],
-           ),
+    String key = _todoList[index].key;
+    String icon = _todoList[index].icon;
+    String value = _todoList[index].value.toString();
+    print(value);
+    return new GestureDetector(
+      onTap: (){
+        print(value);
+//        _updateTodo(_todoList[index]);
+      },
+      child: Card(
+       shape: new RoundedRectangleBorder(
+       side: new BorderSide(color: Colors.grey[700], width: 2.0),
+       borderRadius: BorderRadius.circular(4.0)),
+       elevation: 5.0,
+        child: new Container(
+         margin: const EdgeInsets.only(top: 20.0,),
+         alignment: Alignment.center,
+          child: Column(
+           children: <Widget>[
+            Padding(
+             padding: EdgeInsets.all(10.0),
+              child: new Image.network("https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Rotating_earth_%28large%29.gif/200px-Rotating_earth_%28large%29.gif",scale: 2,),
+              ),
+            new Text("Sesnor : " + key + "\n" , style: TextStyle(fontSize: 14,),),
+            new Text("Value : " + value , style: TextStyle(fontSize: 14,),),
+            ],
+          ),
+        ),
       ),
     );
+
+  } // End of build list
+
+  Widget _showTodoList(){
+    print(_todoList.length);
+    if (_todoList.length > 0){
+      return GridView.builder(
+          shrinkWrap: true,
+          gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+          itemCount: _todoList.length,
+          itemBuilder: (BuildContext context, int index){
+            return _buildList(context, index);
+
+          }
+      );
+    }
+    else{
+      return Center(child: Text("Welcome. Your list is empty",
+        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: 30.0),));
+    }
+
   }
 
   // ignore: must_call_super
   Widget build(BuildContext context) {
 
-    CollectionReference streamRef = Firestore.instance.collection('users').document(widget.userId).collection('sensors');
-
     // TODO: implement sensors grid view
     return Scaffold(
-       body: StreamBuilder(
-         stream: streamRef.snapshots(),
-          builder: (context , snapshot) {
-            if (!snapshot.hasData) {
-              return Text("Loading..");
-            }
-            return GridView.builder(
-              itemCount :snapshot.data.documents.length,
-              gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-                itemBuilder: (BuildContext context, int index) {
-                  return _buildList(context, snapshot.data.documents[index]);
-                }
-            );
-          }// Builder
-       ),
-
+       body:_showTodoList(),
     ); // This
 
+  }
+
+}
+
+class Todo {
+  String key;
+  String icon;
+  int value;
+
+  Todo(this.key, this.icon, this.value);
+
+  Todo.fromSnapshot(DataSnapshot snapshot) :
+        key = snapshot.key,
+        icon = snapshot.value["icon"],
+        value = snapshot.value["value"];
+
+  toJson() {
+    return {
+      "sensor": key,
+      "icon": icon,
+      "value": value,
+    };
   }
 
 }

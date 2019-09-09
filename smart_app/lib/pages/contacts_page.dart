@@ -132,7 +132,7 @@ class _ContactPageState extends State<ContactsPage>{
           ),
         ],
       ),
-      body: StreamBuilder(
+      body: StreamBuilder<QuerySnapshot>(
         stream: streamRef.snapshots(),
           builder: (context , snapshot){
             if (!snapshot.hasData) {
