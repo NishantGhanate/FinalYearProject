@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_app/services/auth_service.dart';
 
@@ -23,17 +24,17 @@ class RootPage extends StatefulWidget {
 
 
 class _RootPageState extends State<RootPage>{
-  String _userId = "";
+  FirebaseUser _userId ;
   AuthStatus authStatus = AuthStatus.NOT_DETERMINED;
   Firestore _db = Firestore.instance;
   // Setting set once tapped on button and logged in
   @override
   void initState() {
     super.initState();
-    widget.auth.getCurrentUser().then((user) {
+    widget.auth.getCurrentUser().then((FirebaseUser user) {
       setState(() {
         if (user != null) {
-          _userId = user?.uid;
+          _userId = user;
           _db.settings(persistenceEnabled: true);
         }
         authStatus =
@@ -67,9 +68,9 @@ class _RootPageState extends State<RootPage>{
         break;
       case AuthStatus.LOGGED_IN:
       // TODO: Redirect to profile page
-        if (_userId.length > 0 && _userId != null) {
+        if (_userId.uid.length > 0 && _userId != null) {
           return new ProfilePage(
-              userId: _userId,
+              user: _userId,
 //              auth: widget.auth
           );
         }

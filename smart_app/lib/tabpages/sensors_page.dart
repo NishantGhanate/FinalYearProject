@@ -112,7 +112,6 @@ class _SensorsPageState extends State<SensorsPage> with AutomaticKeepAliveClient
         ),
       ),
     );
-
   } // End of build list
 
   Widget _showTodoList(){
@@ -129,7 +128,7 @@ class _SensorsPageState extends State<SensorsPage> with AutomaticKeepAliveClient
       );
     }
     else{
-      return Center(child: Text("Welcome. Your list is empty",
+      return Center(child: Text("Loading....",
         textAlign: TextAlign.center,
         style: TextStyle(fontSize: 30.0),));
     }

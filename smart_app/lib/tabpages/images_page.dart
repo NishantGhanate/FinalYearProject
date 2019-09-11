@@ -1,8 +1,14 @@
 
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:smart_app/services/storage_service.dart';
+
 
 class ImagesPage extends StatefulWidget{
   ImagesPage(this.userId) ;
@@ -14,6 +20,8 @@ class ImagesPage extends StatefulWidget{
 
 class _ImagesPageState extends State<ImagesPage> with AutomaticKeepAliveClientMixin<ImagesPage> {
 
+
+  Storage storage = new Storage();
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
@@ -24,12 +32,16 @@ class _ImagesPageState extends State<ImagesPage> with AutomaticKeepAliveClientMi
     super.initState();
   }
 
+
   Widget _buildList(BuildContext context, DocumentSnapshot document) {
-    print(document.documentID);
+//    print(document.documentID);
     Uint8List bytes = base64Decode(document['blob']);
     return new GestureDetector(
-      onTap: (){
+      onTap: () async {
         // TODO : open ImageVIew
+//        final result = await ImageGallerySaver.saveImage(bytes);
+//        print(result);
+
       },
       child: Card(
         shape: new RoundedRectangleBorder(

@@ -3,6 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
+import 'package:smart_app/pages/aboutapp_page.dart';
 
 import 'package:smart_app/pages/contacts_page.dart';
 import 'package:smart_app/pages/login_page.dart';
@@ -16,11 +17,11 @@ Color mainColor = Colors.red[800];
 
 class ProfilePage extends StatefulWidget {
 
-  ProfilePage({Key key,  this.userId})
+  ProfilePage({Key key,  this.user})
       : super(key: key);
 
 //  final BaseAuth auth;
-  final String userId;
+  final FirebaseUser user;
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -30,7 +31,10 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
    TabController tabController;
    AuthService authService = new AuthService();
    FirebaseAuth _auth = FirebaseAuth.instance;
-   FirebaseUser _firebaseUseruser;
+   ImagesPage _imagesPage ;
+   NotificationPage _notificationPage;
+   SensorsPage _sensorsPage;
+   var pages = [ ];
 
 
   @override
@@ -38,6 +42,10 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
     super.initState();
     // TODO : Add tab pages count length
     tabController = new TabController(length: 3, vsync: this);
+    _imagesPage = new ImagesPage(widget.user.uid);
+    _notificationPage = new NotificationPage(widget.user.uid);
+    _sensorsPage = new SensorsPage(widget.user.uid);
+    pages = [_imagesPage,_notificationPage,_sensorsPage];
 
   }
 
@@ -56,21 +64,21 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
-    var pages = [new ImagesPage(widget.userId) , new NotificationPage(widget.userId) , new SensorsPage(widget.userId) ];
+
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Smart Security'),
         backgroundColor: mainColor,
           actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.clear),
-              onPressed:() {
-                 authService.signOut(context);
-                var route = new MaterialPageRoute(builder: (context) => LoginPage());
-                Navigator.of(context).push(route);
-              },
-            ),
+//            IconButton(
+//              icon: Icon(Icons.clear),
+//              onPressed:() {
+//                 authService.signOut(context);
+//                var route = new MaterialPageRoute(builder: (context) => LoginPage());
+//                Navigator.of(context).push(route);
+//              },
+//            ),
           ],
       ),
       drawer: Drawer(
@@ -83,12 +91,12 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
               child: Column(
                 children: <Widget>[
                   CircleAvatar(
-//                      backgroundImage :  _firebaseUseruser.photoUrl  == null   ? AssetImage('assets/images/google_logo.png') : NetworkImage(_firebaseUseruser.photoUrl),
-                    backgroundImage : AssetImage('assets/images/google_logo.png'),
+                      backgroundImage :  widget.user.photoUrl  == null   ? AssetImage('assets/images/google_logo.png') : NetworkImage( widget.user.photoUrl ),
+//                    backgroundImage : AssetImage('assets/images/google_logo.png'),
                     radius: 40,
                   ),
                   new Divider(),
-                  Text(widget.userId ,style: TextStyle(fontSize: 10),)
+                  Text(widget.user.displayName ,style: TextStyle(fontSize: 16),)
                 ],
               ),
               decoration: BoxDecoration(
@@ -101,27 +109,27 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
               title: Text('Contacts'),
               onTap: () {
                 Navigator.pop(context);
-                var route = new MaterialPageRoute(builder: (context) => ContactsPage(widget.userId));
+                var route = new MaterialPageRoute(builder: (context) => ContactsPage(widget.user.uid));
                 Navigator.of(context).push(route);
               },
             ),
-//            new Divider(),
-//            ListTile(
-//              leading: Icon(Icons.account_circle),
-//              title: Text('List 2'),
-//              onTap: () {
-//                Navigator.pop(context);
-////                var route = new MaterialPageRoute(builder: (context) => AboutApp());
-////                Navigator.of(context).push(route);
-//              },
-//            ),
             new Divider(),
             ListTile(
               leading: Icon(Icons.settings),
               title: Text('Settings'),
               onTap: () {
                 Navigator.pop(context);
-                var route = new MaterialPageRoute(builder: (context) =>  SettingsPage());
+                var route = new MaterialPageRoute(builder: (context) => SettingsPage());
+                Navigator.of(context).push(route);
+              },
+            ),
+            new Divider(),
+            ListTile(
+              leading: Icon(Icons.info),
+              title: Text('About app'),
+              onTap: () {
+                Navigator.pop(context);
+                var route = new MaterialPageRoute(builder: (context) =>  AboutAppPage());
                 Navigator.of(context).push(route);
               },
             ),

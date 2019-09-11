@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
-Color mainColor = Colors.red[800];
+Color mainColor = Colors.green[700];
 
 class ContactsPage extends StatefulWidget{
   ContactsPage( this.userId);
@@ -122,7 +122,7 @@ class _ContactPageState extends State<ContactsPage>{
     return Scaffold(
       appBar: AppBar(
         title: Text('Contacts'),
-        backgroundColor: Colors.red[800],
+        backgroundColor: mainColor,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),

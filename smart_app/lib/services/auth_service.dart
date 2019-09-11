@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:smart_app/models/user_model.dart';
 
 abstract class BaseAuth {
-  Future<String> googleSingIn();
+  Future<FirebaseUser> googleSingIn();
   Future<FirebaseUser> getCurrentUser();
   Future<void> signOut(context);
 }
@@ -22,7 +22,7 @@ class AuthService implements BaseAuth {
     return user;
   }
 
-  Future<String> googleSingIn() async {
+  Future<FirebaseUser> googleSingIn() async {
     // Start
     // Init sign in
     GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
@@ -41,7 +41,7 @@ class AuthService implements BaseAuth {
     _db.settings(persistenceEnabled: true);
     print("signed in " + currentUser.displayName);
 
-    return currentUser.uid;
+    return currentUser;
   }
 
     Future<void> signOut(context) async {

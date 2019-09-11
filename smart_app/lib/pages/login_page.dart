@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_app/pages/profile_page.dart';
 import 'package:smart_app/services/auth_service.dart';
@@ -28,8 +29,24 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
 //              FlutterLogo(size: 150),
+//            Stack(
+//              children: <Widget>[
+////                Positioned(
+////                    left: MediaQuery.of(context).size.width * 0.27,
+////                    top: MediaQuery.of(context).size.height * 0.17,
+////                    child: Text('Evento', style: TextStyle(fontSize: 40, color: Colors.pink))
+////                ),
+////                Image.asset(
+////                    "assets/gif/matrix.gif",
+////                  width: MediaQuery.of(context).size.width*0.9,
+////                  height: MediaQuery.of(context).size.height*0.4,
+////                ),
+////                Image(image: AssetImage("assets/icon/bulb.png"), height: 155.0),
+//                //              Text('Smart security system' , style: TextStyle(fontSize: 24),),
+//              ],
+//             ),
               Image(image: AssetImage("assets/images/Tau.png"), height: 155.0),
-              SizedBox(height: 150),
+              SizedBox(height: 130),
               _loginInButton(),
             ],
           ),
@@ -70,13 +87,12 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-
   void _login() async {
-    String uid = await authService.googleSingIn();
-    print(uid);
-    if (uid != null) {
+    FirebaseUser user = await authService.googleSingIn();
+    print(user.uid);
+    if (user != null) {
       var route = new MaterialPageRoute(
-          builder: (context) => ProfilePage(userId: uid));
+          builder: (context) => ProfilePage(user: user));
       Navigator.of(context).push(route);
     }
   }
