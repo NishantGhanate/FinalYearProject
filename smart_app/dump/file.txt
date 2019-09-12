@@ -1,0 +1,30 @@
+        try {
+//          final ByteData bytes = await rootBundle.load('assets/image.jpg');
+          final Uint8List list = bytes.buffer.asUint8List();
+
+          final dir = await getExternalStorageDirectory();
+          final file = await new File('${dir.path}/image3.jpg').create();
+          file.writeAsBytesSync(list);
+          print('${dir.path}/image.jpg');
+//          final channel = const MethodChannel('channel:me.albie.share/share');
+//          channel.invokeMethod('shareFile', 'image.jpg');
+
+        } catch (e) {
+          print('Share error: $e');
+        }
+
+//        final directory = await getApplicationDocumentsDirectory();
+//        final file = File('${directory.path}/my_file.txt');
+//        await file.writeAsString("Fluttter file write text");
+
+
+//        final result = await ImageGallerySaver.saveImage(Uint8List.fromList(bytes));
+//        print(result);
+//        result.exists().then((isThere) {
+//          isThere ? print('exists') : print('non-existent');
+//        });
+//        new Directory('smartapp_images').create()
+//        // The created directory is returned as a Future.
+//            .then((Directory directory) {
+//          print(directory.path);
+//        });

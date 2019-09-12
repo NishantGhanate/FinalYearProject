@@ -103,10 +103,13 @@ class _SensorsPageState extends State<SensorsPage> with AutomaticKeepAliveClient
            children: <Widget>[
             Padding(
              padding: EdgeInsets.all(10.0),
-              child: new Image.network("https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Rotating_earth_%28large%29.gif/200px-Rotating_earth_%28large%29.gif",scale: 2,),
+              child: new Image.network(icon,width: 100.0, height: 100.0),
               ),
-            new Text("Sesnor : " + key + "\n" , style: TextStyle(fontSize: 14,),),
-            new Text("Value : " + value , style: TextStyle(fontSize: 14,),),
+            Padding(
+              padding: EdgeInsets.all(10.0),
+              child: new Text(key + " : " + value, style: TextStyle(fontSize: 15,),),
+            ),
+//            new Text(value , style: TextStyle(fontSize: 14,),),
             ],
           ),
         ),

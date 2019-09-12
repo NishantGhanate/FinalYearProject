@@ -27,12 +27,12 @@ class _FcmHandlerState  extends State<FcmHandler>{
     if (Platform.isIOS) {
       iosSubscription = _fcm.onIosSettingsRegistered.listen((data) {
         print(data);
-        _saveDeviceToken();
+        saveDeviceToken();
       });
 
       _fcm.requestNotificationPermissions(IosNotificationSettings());
     } else {
-      _saveDeviceToken();
+      saveDeviceToken();
     }
 
     _fcm.configure(
@@ -80,7 +80,7 @@ class _FcmHandlerState  extends State<FcmHandler>{
     super.dispose();
   }
 
-  _saveDeviceToken() async {
+  saveDeviceToken() async {
     FirebaseUser firebaseUser = await _auth.currentUser();
     String uid = firebaseUser.uid;
     // Get the token for this device
@@ -103,10 +103,10 @@ class _FcmHandlerState  extends State<FcmHandler>{
       var fmcRef = _database
           .reference()
           .child("users")
-          .child(uid)
-          .child("fcmtoken");
+          .child(uid);
 
-      fmcRef.update({"fcmtoken" :fcmToken });
+      fmcRef.update({"fcmtoken" : fcmToken });
+
     }
 
 

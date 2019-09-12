@@ -19,9 +19,7 @@ class _ContactPageState extends State<ContactsPage>{
   final nameController = TextEditingController();
   final phoneController = TextEditingController();
   final emailController = TextEditingController();
-  String _name;
-  String _phone;
-  String _email;
+
 
   @override
   void initState() {

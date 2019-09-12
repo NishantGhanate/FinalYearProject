@@ -4,7 +4,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:smart_app/services/storage_service.dart';
@@ -33,16 +33,29 @@ class _ImagesPageState extends State<ImagesPage> with AutomaticKeepAliveClientMi
   }
 
 
+
   Widget _buildList(BuildContext context, DocumentSnapshot document) {
 //    print(document.documentID);
     Uint8List bytes = base64Decode(document['blob']);
     return new GestureDetector(
       onTap: () async {
-        // TODO : open ImageVIew
-//        final result = await ImageGallerySaver.saveImage(bytes);
-//        print(result);
+        // TODO : open ImageVIew Save / Share
+        try {
+          final ByteData bytes = await rootBundle.load('assets/images/poly1.jpg');
+          final Uint8List list = bytes.buffer.asUint8List();
 
-      },
+          final tempDir = await getTemporaryDirectory();
+          final file = await new File('${tempDir.path}/image.jpg').create();
+          file.writeAsBytesSync(list);
+
+          final channel = const MethodChannel('channel:me.albie.share/share');
+          channel.invokeMethod('shareFile', 'image.jpg');
+
+        } catch (e) {
+          print('Share error: $e');
+        }
+
+    },
       child: Card(
         shape: new RoundedRectangleBorder(
             side: new BorderSide(color: Colors.grey[700], width: 2.0),

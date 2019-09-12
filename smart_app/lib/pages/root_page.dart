@@ -5,7 +5,7 @@ import 'package:smart_app/services/auth_service.dart';
 
 import 'package:smart_app/pages/login_page.dart';
 import 'package:smart_app/pages/profile_page.dart';
-import 'package:smart_app/services/auth_service.dart';
+
 
 enum AuthStatus {
   NOT_DETERMINED,

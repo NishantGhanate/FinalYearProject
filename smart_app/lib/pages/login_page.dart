@@ -20,38 +20,18 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return new Scaffold(
-      body: Container(
-        color: Colors.black12,
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-//              FlutterLogo(size: 150),
-//            Stack(
-//              children: <Widget>[
-////                Positioned(
-////                    left: MediaQuery.of(context).size.width * 0.27,
-////                    top: MediaQuery.of(context).size.height * 0.17,
-////                    child: Text('Evento', style: TextStyle(fontSize: 40, color: Colors.pink))
-////                ),
-////                Image.asset(
-////                    "assets/gif/matrix.gif",
-////                  width: MediaQuery.of(context).size.width*0.9,
-////                  height: MediaQuery.of(context).size.height*0.4,
-////                ),
-////                Image(image: AssetImage("assets/icon/bulb.png"), height: 155.0),
-//                //              Text('Smart security system' , style: TextStyle(fontSize: 24),),
-//              ],
-//             ),
-              Image(image: AssetImage("assets/images/Tau.png"), height: 155.0),
-              SizedBox(height: 130),
-              _loginInButton(),
-            ],
-          ),
-        ),
-      ),
+    return  Scaffold(
+       body:Stack(
+         fit: StackFit.expand,
+        children: <Widget>[
+          Container(child: Image.asset('assets/gifs/gradients.gif',fit: BoxFit.fill,),height: MediaQuery.of(context).size.height,),
+          Positioned(child: Image.asset('assets/images/Tau.png',scale: 1.5,),top: MediaQuery.of(context).size.height*0.3,left: MediaQuery.of(context).size.width*0.3,),
+          Positioned(child: _loginInButton(),top: MediaQuery.of(context).size.height*0.75,left: MediaQuery.of(context).size.width*0.2,),
+          
+
+
+        ],
+      )
     );
   }
 
