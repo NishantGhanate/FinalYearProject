@@ -20,11 +20,13 @@ class _ContactPageState extends State<ContactsPage>{
   final phoneController = TextEditingController();
   final emailController = TextEditingController();
 
+  Firestore _db = Firestore.instance;
 
   @override
   void initState() {
     // TODO: get contact saves from firebase
     super.initState();
+    _db.settings(persistenceEnabled: true);
   }
 
   _showDialog(BuildContext context){
@@ -116,7 +118,7 @@ class _ContactPageState extends State<ContactsPage>{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    CollectionReference streamRef = Firestore.instance.collection('users').document(widget.userId).collection('contacts');
+    CollectionReference streamRef = _db.collection('users').document(widget.userId).collection('contacts');
     return Scaffold(
       appBar: AppBar(
         title: Text('Contacts'),
@@ -140,7 +142,23 @@ class _ContactPageState extends State<ContactsPage>{
               // itemExtent: 80.0,
                 itemCount: snapshot.data.documents.length,
                 itemBuilder:(context , index){
-                return _buildList(context, snapshot.data.documents[index]);
+                  DocumentSnapshot document  = snapshot.data.documents[index];
+                  return  Dismissible(
+                    direction: DismissDirection.startToEnd,
+                    resizeDuration: Duration(microseconds: 200),
+                    key : ObjectKey(document.documentID),
+                    onDismissed: (direction){
+                      // TODO: implement  delete function and check direction if needed
+                      setState(() {
+                        // TODO: implement deletion of local snapshot and setState
+                        snapshot.data.documents.removeAt(index);
+                      });
+                      // TODO : Delete Firebase Notification
+                      _deleteContact(document.documentID);
+                    },
+                    background: Container(color: Colors.red , child: Icon(Icons.delete , size: 25,)),
+                    child:   _buildList(context, snapshot.data.documents[index]),
+                  );
               }
               );
           }
@@ -159,7 +177,7 @@ class _ContactPageState extends State<ContactsPage>{
 
   _newContacts(_name,_phone,_email) async{
     // TODO : Add new contact and error handling
-    DocumentReference streamRef = Firestore.instance.collection('users').document(widget.userId).collection('contacts').document(_name) ;
+    DocumentReference streamRef = _db.collection('users').document(widget.userId).collection('contacts').document(_name) ;
     streamRef.setData({
       "name" :_name,
       "phone": _phone,
@@ -169,6 +187,10 @@ class _ContactPageState extends State<ContactsPage>{
       print("Got error: ${e.error}");     // Finally, callback fires.
       return ;
     });
+  }
+
+  _deleteContact(doc) async{
+    _db.collection('users').document(widget.userId).collection('contacts').document(doc).delete();
   }
 
 

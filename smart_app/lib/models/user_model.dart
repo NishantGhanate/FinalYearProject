@@ -23,9 +23,4 @@ class UserModel extends Model{
   }
 
 
-
-
-
-
-
 }

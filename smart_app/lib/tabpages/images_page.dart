@@ -4,9 +4,8 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/services.dart';
-import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:simple_share/simple_share.dart';
 import 'package:smart_app/services/storage_service.dart';
 
 
@@ -20,6 +19,7 @@ class ImagesPage extends StatefulWidget{
 
 class _ImagesPageState extends State<ImagesPage> with AutomaticKeepAliveClientMixin<ImagesPage> {
 
+  Firestore _db = Firestore.instance;
 
   Storage storage = new Storage();
   @override
@@ -30,9 +30,73 @@ class _ImagesPageState extends State<ImagesPage> with AutomaticKeepAliveClientMi
   void initState() {
     // TODO: implement firebase images list and listner
     super.initState();
+    _db.settings(persistenceEnabled: true);
   }
 
 
+   _showDialog(BuildContext context , Uint8List bytes , String id) {
+    return showDialog(context: context,
+        builder: (BuildContext context){
+          return AlertDialog(
+            backgroundColor: Colors.grey[800],
+            title: Text('Please select an action below',style: TextStyle(fontSize: 15),),
+//              content: Text(''),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Save'),
+                textColor: Colors.white,
+                onPressed: () async {
+                  try{
+                    var dir = '/storage/emulated/0/Smartapp/';
+                    File file = await new File(dir+id+'.jpg').create(recursive: true);
+                    file.writeAsBytes(bytes);
+//
+//                    final snackBar = SnackBar(
+//                        content: Text('Yay! A SnackBar!'),
+//                        action: SnackBarAction(
+//                          label: 'Undo',
+//                          onPressed: () {},
+//                        ),
+//                    );
+//
+//                    Scaffold.of(context).showSnackBar(snackBar);
+                    Navigator.pop(context);
+
+                  }
+                  catch(e){
+                    print('error: $e');
+                  }
+                },
+              ),
+              FlatButton(
+                child: Text('Share'),
+                textColor: Colors.white,
+                onPressed: () async {
+                  try{
+                    var tempDir = await getTemporaryDirectory();
+                    var savePath = '${tempDir.path}/image.jpg';
+                    final file = await new File(savePath).create(recursive: true);
+                    file.writeAsBytesSync(bytes);
+                    print(savePath);
+                    final uri = Uri.file(savePath);
+                    SimpleShare.share(
+                        uri: uri.toString(),
+                        title: 'title',
+                        msg: id
+                    );
+                    Navigator.pop(context);
+                    // Scaffold
+                  }
+                  catch(e){
+                    print('error: $e');
+                  }
+                },
+              )
+            ],
+          );
+        }
+    );
+  }
 
   Widget _buildList(BuildContext context, DocumentSnapshot document) {
 //    print(document.documentID);
@@ -40,21 +104,7 @@ class _ImagesPageState extends State<ImagesPage> with AutomaticKeepAliveClientMi
     return new GestureDetector(
       onTap: () async {
         // TODO : open ImageVIew Save / Share
-        try {
-          final ByteData bytes = await rootBundle.load('assets/images/poly1.jpg');
-          final Uint8List list = bytes.buffer.asUint8List();
-
-          final tempDir = await getTemporaryDirectory();
-          final file = await new File('${tempDir.path}/image.jpg').create();
-          file.writeAsBytesSync(list);
-
-          final channel = const MethodChannel('channel:me.albie.share/share');
-          channel.invokeMethod('shareFile', 'image.jpg');
-
-        } catch (e) {
-          print('Share error: $e');
-        }
-
+        _showDialog(context,bytes,document.documentID);
     },
       child: Card(
         shape: new RoundedRectangleBorder(
@@ -87,7 +137,8 @@ class _ImagesPageState extends State<ImagesPage> with AutomaticKeepAliveClientMi
   @override
   // ignore: must_call_super
   Widget build(BuildContext context) {
-    CollectionReference imgReference = Firestore.instance.collection('users').document(widget.userId).collection('images');
+    CollectionReference imgReference = _db.collection('users').document(widget.userId).collection('images');
+
 //    DocumentReference imgReference =  Firestore.instance.collection('testting').document('Images');
     // TODO: implement build
     return Scaffold(
@@ -114,21 +165,18 @@ class _ImagesPageState extends State<ImagesPage> with AutomaticKeepAliveClientMi
                   // TODO : Delete Firebase Notification
                   _delete(document.documentID);
                 },
-                background: Container(color: Colors.red ,),
+                background: Container(color: Colors.red , child: Icon(Icons.delete , size: 50,),),
                 child:  _buildList(context, snapshot.data.documents[index]),
               );
-
             }
           );
         }
       ),
-
     );
-
   }
 
   Future _delete(doc) async {
-    Firestore.instance.collection('users').document(widget.userId).collection('images').document(doc).delete();
+    _db.collection('users').document(widget.userId).collection('images').document(doc).delete();
   }
 
 

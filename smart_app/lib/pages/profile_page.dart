@@ -1,7 +1,4 @@
 
-import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -18,9 +15,6 @@ import 'package:smart_app/tabpages/notificaton_page.dart';
 import 'package:smart_app/tabpages/sensors_page.dart';
 import 'package:smart_app/services/auth_service.dart';
 
-const Color mainColor = Color(0xFF7ee);
-const Color PURPLE = Color(0xFF8c77ec);
-//final Brightness brightness =
 
 class ProfilePage extends StatefulWidget {
 
@@ -89,7 +83,7 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
       ),
       drawer: Opacity(
         opacity: 0.85,
-              child: Drawer(
+        child: Drawer(
           child: ListView(
             padding: EdgeInsets.zero,
             children: <Widget>[
@@ -100,15 +94,17 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
                   children: <Widget>[
                     CircleAvatar(
                         backgroundImage :  widget.user.photoUrl  == null   ? AssetImage('assets/images/google_logo.png') : NetworkImage( widget.user.photoUrl ),
-//                    backgroundImage : AssetImage('assets/images/google_logo.png'),
+//                    backgroundColor : Colors.grey[800],
                       radius: 40,
                     ),
-                    new Divider(),
-                    Text(widget.user.displayName ,style: TextStyle(fontSize: 16),)
+                    Padding(
+                      padding:  EdgeInsets.all(15.0),
+                      child: Text(widget.user.displayName ,style: TextStyle(fontSize: 16),),
+                    )
                   ],
                 ),
                 decoration: BoxDecoration(
-                  color: mainColor,
+//                  color:Colors.grey[800] ,
                 ),
               ),
 
@@ -147,7 +143,7 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
         ),
       ),
       bottomNavigationBar:  FancyBottomNavigation(
-        circleColor: Colors.red[800],
+        circleColor: Colors.deepPurple,
         activeIconColor: Colors.white ,
       inactiveIconColor: Colors.white,
         textColor: Colors.white,
@@ -172,24 +168,12 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
    saveDeviceToken() async {
      FirebaseUser firebaseUser = await _auth.currentUser();
      String uid = firebaseUser.uid;
-     final Firestore _db = Firestore.instance;
      final FirebaseMessaging _fcm = FirebaseMessaging();
      // Get the token for this device
      String fcmToken = await _fcm.getToken();
      print('Fcmtoken = ' + fcmToken);
      // Save it to Firestore
      if (fcmToken != null) {
-//       var tokens = _db
-//           .collection('users')
-//           .document(uid)
-//           .collection('tokens')
-//           .document(fcmToken);
-//
-//       await tokens.setData({
-//         'token': fcmToken,
-//         'createdAt': FieldValue.serverTimestamp(), // optional
-//         'platform': Platform.operatingSystem // optional
-//       });
 
        var fmcRef = _database
            .reference()

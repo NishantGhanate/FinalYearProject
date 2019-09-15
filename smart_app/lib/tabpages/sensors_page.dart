@@ -25,6 +25,7 @@ class _SensorsPageState extends State<SensorsPage> with AutomaticKeepAliveClient
   StreamSubscription<Event> _onTodoChangedSubscription;
   Query _todoQuery;
 
+
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
@@ -33,6 +34,7 @@ class _SensorsPageState extends State<SensorsPage> with AutomaticKeepAliveClient
   void initState() {
     // TODO: implement firebase images list and listner
     super.initState();
+    _database.setPersistenceEnabled(true);
     _todoList = new List();
     _todoQuery = _database
         .reference()
@@ -107,7 +109,7 @@ class _SensorsPageState extends State<SensorsPage> with AutomaticKeepAliveClient
               ),
             Padding(
               padding: EdgeInsets.all(10.0),
-              child: new Text(key + " : " + value, style: TextStyle(fontSize: 15,),),
+              child: new Text(key + " : " + value, style: TextStyle(fontSize: 22,),),
             ),
 //            new Text(value , style: TextStyle(fontSize: 14,),),
             ],

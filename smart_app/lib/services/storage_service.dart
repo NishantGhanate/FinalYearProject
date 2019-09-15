@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:path_provider/path_provider.dart';
 
 class Storage{
@@ -15,11 +12,6 @@ class Storage{
     return path;
   }
 
-  Future<File> writeData(String data) async {
-    final file = await localFile;
-    print(file);
-
-  }
 
 
 

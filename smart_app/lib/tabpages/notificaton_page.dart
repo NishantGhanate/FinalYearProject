@@ -15,6 +15,9 @@ class NotificationPage extends StatefulWidget{
 
 class _NotificationPageState extends State<NotificationPage> with AutomaticKeepAliveClientMixin<NotificationPage> {
 
+
+  Firestore _db = Firestore.instance;
+
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
@@ -23,6 +26,7 @@ class _NotificationPageState extends State<NotificationPage> with AutomaticKeepA
   void initState() {
     // TODO: implement firebase images list and listner
     super.initState();
+    _db.settings(persistenceEnabled: true);
   }
 
 
@@ -39,7 +43,7 @@ class _NotificationPageState extends State<NotificationPage> with AutomaticKeepA
 
   // ignore: must_call_super
   Widget build(BuildContext context) {
-    CollectionReference streamRef = Firestore.instance.collection('users').document(widget.userId).collection('notifications');
+    CollectionReference streamRef = _db.collection('users').document(widget.userId).collection('notifications');
 
     // TODO: implement build
     return  Scaffold(
@@ -67,7 +71,7 @@ class _NotificationPageState extends State<NotificationPage> with AutomaticKeepA
                     // TODO : Delete Firebase Notification
                     _deleteNotificattion(document.documentID);
                   },
-                  background: Container(color: Colors.red ,),
+                  background: Container(color: Colors.red , child: Icon(Icons.delete , size: 25,)),
                   child:  _buildList(context, snapshot.data.documents[index]),
                 );
 
@@ -79,7 +83,7 @@ class _NotificationPageState extends State<NotificationPage> with AutomaticKeepA
   }
 
   Future _deleteNotificattion(doc) async {
-    Firestore.instance.collection('users').document(widget.userId).collection('notifications').document(doc).delete();
+    _db.collection('users').document(widget.userId).collection('notifications').document(doc).delete();
 //    Firestore.instance.collection('test').document(doc).delete();
 
   }
