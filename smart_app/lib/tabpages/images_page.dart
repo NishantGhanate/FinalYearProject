@@ -20,6 +20,7 @@ class ImagesPage extends StatefulWidget{
 class _ImagesPageState extends State<ImagesPage> with AutomaticKeepAliveClientMixin<ImagesPage> {
 
   Firestore _db = Firestore.instance;
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   Storage storage = new Storage();
   @override
@@ -33,6 +34,11 @@ class _ImagesPageState extends State<ImagesPage> with AutomaticKeepAliveClientMi
     _db.settings(persistenceEnabled: true);
   }
 
+  void showInSnackBar(String value) {
+    _scaffoldKey.currentState.showSnackBar(
+        SnackBar(content: Text(value , style: TextStyle(fontSize: 15),) )
+    );
+  }
 
    _showDialog(BuildContext context , Uint8List bytes , String id) {
     return showDialog(context: context,
@@ -50,18 +56,9 @@ class _ImagesPageState extends State<ImagesPage> with AutomaticKeepAliveClientMi
                     var dir = '/storage/emulated/0/Smartapp/';
                     File file = await new File(dir+id+'.jpg').create(recursive: true);
                     file.writeAsBytes(bytes);
-//
-//                    final snackBar = SnackBar(
-//                        content: Text('Yay! A SnackBar!'),
-//                        action: SnackBarAction(
-//                          label: 'Undo',
-//                          onPressed: () {},
-//                        ),
-//                    );
-//
-//                    Scaffold.of(context).showSnackBar(snackBar);
-                    Navigator.pop(context);
 
+                    showInSnackBar('File Saved : '+dir+id+'.jpg');
+                    Navigator.pop(context);
                   }
                   catch(e){
                     print('error: $e');
@@ -85,7 +82,6 @@ class _ImagesPageState extends State<ImagesPage> with AutomaticKeepAliveClientMi
                         msg: id
                     );
                     Navigator.pop(context);
-                    // Scaffold
                   }
                   catch(e){
                     print('error: $e');
@@ -139,9 +135,9 @@ class _ImagesPageState extends State<ImagesPage> with AutomaticKeepAliveClientMi
   Widget build(BuildContext context) {
     CollectionReference imgReference = _db.collection('users').document(widget.userId).collection('images');
 
-//    DocumentReference imgReference =  Firestore.instance.collection('testting').document('Images');
     // TODO: implement build
     return Scaffold(
+      key: _scaffoldKey,
       body: StreamBuilder<QuerySnapshot>(
         stream: imgReference.snapshots(),
         builder: (context , snapshot){
@@ -164,6 +160,7 @@ class _ImagesPageState extends State<ImagesPage> with AutomaticKeepAliveClientMi
                   });
                   // TODO : Delete Firebase Notification
                   _delete(document.documentID);
+                  showInSnackBar('File delered : ${document.documentID}');
                 },
                 background: Container(color: Colors.red , child: Icon(Icons.delete , size: 50,),),
                 child:  _buildList(context, snapshot.data.documents[index]),
@@ -173,6 +170,7 @@ class _ImagesPageState extends State<ImagesPage> with AutomaticKeepAliveClientMi
         }
       ),
     );
+
   }
 
   Future _delete(doc) async {

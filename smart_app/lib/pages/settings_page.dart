@@ -24,7 +24,7 @@ class _SettingsPageState extends State<SettingsPage>{
     return Scaffold(
       appBar: AppBar(
         title: Text('Settings'),
-        backgroundColor: PURPLE,
+        backgroundColor: Colors.red[800],
       ),
       body: Container(
         child: Column(
@@ -34,7 +34,7 @@ class _SettingsPageState extends State<SettingsPage>{
             Padding(
               padding:  EdgeInsets.all(150.0),
               child: RaisedButton(
-                color: PURPLE,
+                color: Colors.red[800],
                 onPressed: (){
                   authService.signOut(context);
                   var route = new MaterialPageRoute(builder: (context) => LoginPage());
