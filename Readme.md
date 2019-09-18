@@ -11,14 +11,14 @@ Hi! i'm excited to start & share my final year project progression .
     - [x] Configurations store locally Read & Write
     - [x] Motion Capture store locally Video & Images
     - [x] Add Firebase and handle internet exception
-- [ ] Mobile App
-    - [ ] Bind with Firebase
-    - [ ] Internet Expection and Offline 
-    - [ ] Auth Mobile / E-mail
-    - [ ] Profile Type UI , settings and actions 
-    - [ ] Save & Share Images 
-- [ ]  Arduino
-    - [ ] ObjectOrientedProgramming 
+- [x] Mobile App
+    - [x] Bind with Firebase
+    - [x] Internet Expection and Offline 
+    - [x] Auth Mobile / E-mail
+    - [x] Profile Type UI , settings and actions 
+    - [x] Save & Share Images 
+- [x]  Arduino
+    - [x] Esp wifi connect
     - [ ] Serial Port Communication with python
     - [ ] Servo , Buzzer  , LDR 
 

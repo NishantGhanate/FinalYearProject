@@ -4,13 +4,13 @@ import cv2
 import numpy as np
 import re 
 import json 
-
+import asyncio
 from datetime import datetime , timedelta
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 from PyQt5.QtCore import QTimer , QSize
 from PyQt5.QtGui import QIcon, QImage, QPixmap , QPalette , QBrush
 from Packages.firebase import Firebase
-
+ 
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 
@@ -34,7 +34,7 @@ class SmartSystemUI(QtWidgets.QMainWindow):
             uic.loadUi(ui_path +'Design1.ui',self)
             self.setWindowIcon(QIcon(icon_path)) 
             
-            # camerLabel_path =  ui_path + os.path.sep + 'Assests'+ os.path.sep +'compute.png'
+            # self.camerLabel_path =  cv2.imread(ui_path + os.path.sep + 'Assests'+ os.path.sep +'compute.png')
             # pixmap = QPixmap(icon_path)
             # self.QlabelCamera.setPixmap(pixmap)
 
@@ -63,10 +63,11 @@ class SmartSystemUI(QtWidgets.QMainWindow):
         self.labelMode.setText('OFFLINE-MODE')
         self.Firebase = Firebase(serviceKey = SERVICE_KEY)
         self.load(self)
+        # Read write user config
         user = self.rdConfig(data='None',mode='r')
         if user != None:
             self.lineEditUid.setText(user['uid'])
-    
+        self.__loop = asyncio.get_event_loop()
     # Not neceassy will be usefull in future 
     QtCore.pyqtSlot()   
     
@@ -75,7 +76,7 @@ class SmartSystemUI(QtWidgets.QMainWindow):
         self.backgroundSubtracter = cv2.createBackgroundSubtractorMOG2()
         self.blackImage = np.zeros(shape=[480, 640], dtype=np.uint8)
         # Play with threashold value to match the sensitvity of motion 
-        self.threshold = 6942000
+        self.threshold = 9694200
         self.timeToday = datetime.now()
         self._codec = cv2.VideoWriter_fourcc('M','J','P','G')
         self._kernel = np.ones((2,2),np.uint8)
@@ -92,17 +93,20 @@ class SmartSystemUI(QtWidgets.QMainWindow):
                 self.startRecording()  
             else:
                 self.listWidgetLogs.addItem('Please check your internet connection')
-        self.startRecording() 
-        self.labelMode.setText('STATUS : OFFLINE ') 
-        self.listWidgetLogs.addItem('OFFLINE - MODE : '+ str(self.timeToday))
+        if self.radioButtonOffline.isChecked():
+            self.startRecording() 
+            self.labelMode.setText('STATUS : OFFLINE ') 
+            self.listWidgetLogs.addItem('OFFLINE - MODE : '+ str(self.timeToday))
         
+            
     def startRecording(self):          
         # Setting up camera req
         self.cap = cv2.VideoCapture(0)
+        self.cap.set(5, 60)
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT,480)
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH,640)
         timestampDay =  datetime.now().strftime("%A- %d- %B %Y %I-%M-%S")
-        self.videoWriter = cv2.VideoWriter(VIDEO_PATH + timestampDay + '.avi',self._codec, 15, ( 640,480) )
+        # self.videoWriter = cv2.VideoWriter(VIDEO_PATH + timestampDay + '.avi',self._codec, 15, ( 640,480) )
         # Setting up QLabel Timer On start init the  Update frame 
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_frame)
@@ -115,11 +119,13 @@ class SmartSystemUI(QtWidgets.QMainWindow):
         ret,image = self.cap.read()
         timeStamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         timestampDay =  datetime.now().strftime("%A, %d. %B %Y %I:%M:%S %p")
-        cv2.putText(image,timestampDay,(170,450),cv2.FONT_HERSHEY_SIMPLEX , 0.5,(255,100,100),2,cv2.LINE_AA)
+        cv2.putText(image,timestampDay,(20,450),cv2.FONT_HERSHEY_SIMPLEX , 0.7,(255,100,100),2,cv2.LINE_AA)
         # # image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        self.displayImage(image,1)
-        self.motionCapture(image)
-        self.videoWriter.write(image)
+        # ret = return if camera if working
+        if ret:
+            self.displayImage(image,1)
+            self.motionCapture(image)
+            # self.videoWriter.write(image)
              
     def displayImage(self,img,window=1):
         qformat = QImage.Format_Indexed8
@@ -145,20 +151,27 @@ class SmartSystemUI(QtWidgets.QMainWindow):
             self.timeToday = currentTime
             timestampDay =  datetime.now().strftime("%A %d %B %Y %I-%M-%S-%p")
             self.logsWidget(timestampDay)
-    
+
             capturedImage = IMAGE_PATH + timestampDay + '.jpg'
-            cv2.imwrite(capturedImage , image) 
+            # cv2.imwrite(capturedImage , image) 
             print('Image saved = {}'.format(capturedImage))
-            if self.Firebase.getPingTest() and self.userExists:
-                self.Firebase.setImageFireStore(capturedImage,timestampDay)
-                self.Firebase.setNotification(timestampDay) 
+            self.__loop.run_until_complete(self.notifyUser(capturedImage,timestampDay))
         # cv2.imshow('Backend', fgmask)
-            
+        
+    async def notifyUser(self,capturedImage,timestampDay):
+        if self.Firebase.getPingTest() and self.userExists:
+            # self.Firebase.setImageFireStore(capturedImage,timestampDay)
+            self.Firebase.setNotification(timestampDay)
+        else:
+            self.logsWidget("Offline : " + timestampDay )
+             
+                
     def stopButton(self): 
-        # # Release the camera resources and stop camera 
-        self.cap.release()
-        self.videoWriter.release()
+        # # Release the camera resources and stop camera
         self.timer.stop()
+        # self.videoWriter.release()
+        self.cap.release()
+       
         self.pushButtonStart.setEnabled(True)
         self.pushButtonVerify.setEnabled(True)
         self.pushButtonStop.setEnabled(False)
@@ -171,13 +184,16 @@ class SmartSystemUI(QtWidgets.QMainWindow):
             # Call firebase and verify user 
             self.userExists = self.Firebase.verifyUser(uid)
             if self.userExists:
-                self.logsWidget('User Verified =  '+ str(uid)) 
+                self.logsWidget('User Verified =  '+ str(uid))
+                self.labelMode.setText('STATUS : ONLINE ') 
                 Data = {'uid' : uid}
                 self.rdConfig(data = Data , mode='w')
             else:
                 self.userExists = False
+                self.logsWidget('Invalid UID : '+ str(uid)) 
+                
         else:
-            self.logsWidget('Invalid UID '+ str(uid))         
+            self.logsWidget('Invalid UID : '+ str(uid))         
 
     def logsWidget(self,msg):
         self.logsCount += 1
@@ -212,9 +228,10 @@ class SmartSystemUI(QtWidgets.QMainWindow):
         except OSError as e:
             self.logsWidget('Before starting verify uid')
             print('{}'.format(e))
-           
-            
-              
+    
+
+                   
+                     
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     smartSystemUI = SmartSystemUI()

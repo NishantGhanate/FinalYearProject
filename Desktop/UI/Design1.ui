@@ -165,7 +165,7 @@ color: white
     </property>
     <property name="font">
      <font>
-      <pointsize>10</pointsize>
+      <pointsize>1</pointsize>
      </font>
     </property>
     <property name="text">
@@ -194,7 +194,7 @@ color: white
     <property name="geometry">
      <rect>
       <x>780</x>
-      <y>620</y>
+      <y>580</y>
       <width>101</width>
       <height>31</height>
      </rect>
@@ -211,8 +211,8 @@ color: white
    <widget class="QLabel" name="labelLogs">
     <property name="geometry">
      <rect>
-      <x>790</x>
-      <y>340</y>
+      <x>780</x>
+      <y>250</y>
       <width>141</width>
       <height>31</height>
      </rect>
@@ -229,8 +229,8 @@ color: white
    <widget class="QRadioButton" name="radioButtonOnline">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>570</y>
+      <x>50</x>
+      <y>600</y>
       <width>151</width>
       <height>21</height>
      </rect>
@@ -241,13 +241,13 @@ color: white
      </font>
     </property>
     <property name="text">
-     <string>ONLINE - MODE</string>
+     <string>ONLINE </string>
     </property>
    </widget>
    <widget class="QRadioButton" name="radioButtonOffline">
     <property name="geometry">
      <rect>
-      <x>40</x>
+      <x>150</x>
       <y>600</y>
       <width>141</width>
       <height>21</height>
@@ -259,14 +259,14 @@ color: white
      </font>
     </property>
     <property name="text">
-     <string>OFFLINE  - MODE</string>
+     <string>OFFLINE  </string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButtonVerify">
     <property name="geometry">
      <rect>
       <x>790</x>
-      <y>140</y>
+      <y>120</y>
       <width>101</width>
       <height>31</height>
      </rect>
@@ -284,7 +284,7 @@ color: white
     <property name="geometry">
      <rect>
       <x>790</x>
-      <y>50</y>
+      <y>30</y>
       <width>261</width>
       <height>21</height>
      </rect>
@@ -302,9 +302,9 @@ color: white
     <property name="geometry">
      <rect>
       <x>780</x>
-      <y>380</y>
+      <y>290</y>
       <width>331</width>
-      <height>192</height>
+      <height>261</height>
      </rect>
     </property>
    </widget>
@@ -312,7 +312,7 @@ color: white
     <property name="geometry">
      <rect>
       <x>900</x>
-      <y>340</y>
+      <y>250</y>
       <width>201</width>
       <height>31</height>
      </rect>
@@ -352,7 +352,7 @@ color: white
     <property name="geometry">
      <rect>
       <x>790</x>
-      <y>90</y>
+      <y>70</y>
       <width>271</width>
       <height>31</height>
      </rect>
