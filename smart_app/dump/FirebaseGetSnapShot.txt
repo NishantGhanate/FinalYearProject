@@ -1,0 +1,4 @@
+   var child = FirebaseDatabase.instance.reference().child('users').child(widget.userId).child('sensors');
+    child.once().then((DataSnapshot snapshot) {
+      print('Data : ${snapshot.value}');
+    });

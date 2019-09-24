@@ -1,0 +1,30 @@
+ saveDeviceToken() async {
+     FirebaseUser firebaseUser = await _auth.currentUser();
+     String uid = firebaseUser.uid;
+     final Firestore _db = Firestore.instance;
+     final FirebaseMessaging _fcm = FirebaseMessaging();
+     // Get the token for this device
+     String fcmToken = await _fcm.getToken();
+     print('Fcmtoken = ' + fcmToken);
+     // Save it to Firestore
+     if (fcmToken != null) {
+//       var tokens = _db
+//           .collection('users')
+//           .document(uid)
+//           .collection('tokens')
+//           .document(fcmToken);
+//
+//       await tokens.setData({
+//         'token': fcmToken,
+//         'createdAt': FieldValue.serverTimestamp(), // optional
+//         'platform': Platform.operatingSystem // optional
+//       });
+
+       var fmcRef = _database
+           .reference()
+           .child("users")
+           .child(uid);
+
+       fmcRef.update({"fcmtoken": fcmToken});
+     }
+   }
