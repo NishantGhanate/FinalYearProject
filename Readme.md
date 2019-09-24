@@ -10,7 +10,7 @@ Hi! i'm excited to start & share my final year project progression .
     - [x] Write UI functionality 
     - [x] Configurations store locally Read & Write
     - [x] Motion Capture store locally Video & Images
-    - [ ] Add Firebase and handle internet exception
+    - [x] Add Firebase and handle internet exception
 - [x] Mobile App
     - [x] Bind with Firebase
     - [x] Internet Expection and Offline 
@@ -18,9 +18,9 @@ Hi! i'm excited to start & share my final year project progression .
     - [x] Profile Type UI , settings and actions 
     - [x] Save & Share Images 
 - [x]  Arduino
-    - [x] Esp wifi connection 
-    - [x] Firebase connection
-    - [ ] Temp , PIR  , LDR 
+    - [x] Esp wifi connect
+    - [ ] Serial Port Communication with python
+    - [ ] Servo , Buzzer  , LDR 
 
 
 

@@ -5,3 +5,10 @@ desktop.ini
 /Desktop/Congig/Service.json
 # ignore a file type
 *.json
+<<<<<<< HEAD
+=======
+/MobileApp
+/smart_app
+
+.json
+>>>>>>> 2a732b378103136551874a2775032a2e7813997c
