@@ -26,3 +26,21 @@ Hi! i'm excited to start & share my final year project progression .
 
 # Flow Diagram
 ![](https://github.com/NishantGhanate/FinalYearProject/blob/master/Desktop/UI/Assests/FlowDiagram.png)
+
+
+# Python packages to install version 3.6 + :
+
+> pip install PyQt5 
+
+> pip install PyQt5-tools
+
+> pip install opencv-contrib-python
+
+> pip install pip install asyncio
+
+> pip install firebase_admin
+
+> pip install numpy
+
+
+
