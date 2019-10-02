@@ -17,7 +17,7 @@ class _NotificationPageState extends State<NotificationPage> with AutomaticKeepA
 
 
   Firestore _db = Firestore.instance;
-
+  CollectionReference streamRef ;
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
@@ -27,6 +27,7 @@ class _NotificationPageState extends State<NotificationPage> with AutomaticKeepA
     // TODO: implement firebase images list and listner
     super.initState();
     _db.settings(persistenceEnabled: true);
+    streamRef = _db.collection('users').document(widget.userId).collection('notifications');
   }
 
 
@@ -43,7 +44,7 @@ class _NotificationPageState extends State<NotificationPage> with AutomaticKeepA
 
   // ignore: must_call_super
   Widget build(BuildContext context) {
-    CollectionReference streamRef = _db.collection('users').document(widget.userId).collection('notifications');
+
 
     // TODO: implement build
     return  Scaffold(

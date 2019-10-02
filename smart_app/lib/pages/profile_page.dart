@@ -38,7 +38,7 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
    SensorsPage _sensorsPage;
    final FirebaseDatabase _database = FirebaseDatabase.instance;
    var pages = [ ];
-
+   var currentPage;
 
   @override
   void initState()  {
@@ -60,7 +60,7 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
   }
 
   // Sets current active page
-  var currentPage;
+
 
   @override
   Widget build(BuildContext context) {
@@ -154,6 +154,7 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
           TabData(iconData: Icons.device_hub, title: "Sensors")
         ],
         onTabChangedListener: (position) {
+
           setState(() {
             currentPage = pages[position];
           });

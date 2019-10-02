@@ -24,11 +24,10 @@ class _LoginPageState extends State<LoginPage> {
        body:Stack(
          fit: StackFit.expand,
         children: <Widget>[
-          Container(child: Image.asset('assets/gifs/gradients.gif',fit: BoxFit.fill,),height: MediaQuery.of(context).size.height,),
-          Positioned(child: Image.asset('assets/images/Tau.png',scale: 1.5,),top: MediaQuery.of(context).size.height*0.3,left: MediaQuery.of(context).size.width*0.3,),
+          Container(child: Image.asset('assets/gifs/matrix.gif',fit: BoxFit.fill,),height: MediaQuery.of(context).size.height,),
+          Positioned(child: Image.asset('assets/icons/logo.png',scale: 1,),top: MediaQuery.of(context).size.height*0.22,left: MediaQuery.of(context).size.width*0.18,),
+          Positioned(child: Text('Smart security' ,style: TextStyle(color: Colors.white, fontSize: 36)  ) , top: MediaQuery.of(context).size.height*0.50,left: MediaQuery.of(context).size.width*0.25,),
           Positioned(child: _loginInButton(),top: MediaQuery.of(context).size.height*0.75,left: MediaQuery.of(context).size.width*0.2,),
-          
-
 
         ],
       )

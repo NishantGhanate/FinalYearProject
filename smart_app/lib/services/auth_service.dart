@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:smart_app/pages/login_page.dart';
 
 
 abstract class BaseAuth {
@@ -44,9 +47,8 @@ class AuthService implements BaseAuth {
   }
 
     Future<void> signOut(context) async {
-     _auth.signOut();
+     await FirebaseAuth.instance.signOut();
      await _googleSignIn.signOut(); //Add this to ask again for diffrent id
-//     FirebaseAuth.instance.signOut();
 
   }
 

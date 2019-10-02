@@ -20,9 +20,11 @@ class ImagesPage extends StatefulWidget{
 class _ImagesPageState extends State<ImagesPage> with AutomaticKeepAliveClientMixin<ImagesPage> {
 
   Firestore _db = Firestore.instance;
+  CollectionReference imgReference ;
+  Storage storage = new Storage();
+
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  Storage storage = new Storage();
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
@@ -32,6 +34,7 @@ class _ImagesPageState extends State<ImagesPage> with AutomaticKeepAliveClientMi
     // TODO: implement firebase images list and listner
     super.initState();
     _db.settings(persistenceEnabled: true);
+    imgReference = _db.collection('users').document(widget.userId).collection('images');
   }
 
   void showInSnackBar(String value) {
@@ -133,7 +136,7 @@ class _ImagesPageState extends State<ImagesPage> with AutomaticKeepAliveClientMi
   @override
   // ignore: must_call_super
   Widget build(BuildContext context) {
-    CollectionReference imgReference = _db.collection('users').document(widget.userId).collection('images');
+
 
     // TODO: implement build
     return Scaffold(
@@ -160,7 +163,7 @@ class _ImagesPageState extends State<ImagesPage> with AutomaticKeepAliveClientMi
                   });
                   // TODO : Delete Firebase Notification
                   _delete(document.documentID);
-                  showInSnackBar('File delered : ${document.documentID}');
+                  showInSnackBar('File deleted : ${document.documentID}');
                 },
                 background: Container(color: Colors.red , child: Icon(Icons.delete , size: 50,),),
                 child:  _buildList(context, snapshot.data.documents[index]),

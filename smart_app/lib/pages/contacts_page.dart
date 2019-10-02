@@ -21,12 +21,13 @@ class _ContactPageState extends State<ContactsPage>{
   final emailController = TextEditingController();
 
   Firestore _db = Firestore.instance;
-
+  CollectionReference streamRef;
   @override
   void initState() {
     // TODO: get contact saves from firebase
     super.initState();
     _db.settings(persistenceEnabled: true);
+    streamRef = _db.collection('users').document(widget.userId).collection('contacts');
   }
 
   _showDialog(BuildContext context){
@@ -118,7 +119,7 @@ class _ContactPageState extends State<ContactsPage>{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    CollectionReference streamRef = _db.collection('users').document(widget.userId).collection('contacts');
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Contacts'),
