@@ -4,9 +4,11 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
+import 'package:flutter_launcher_icons/xml_templates.dart';
 import 'package:smart_app/pages/aboutapp_page.dart';
 
 import 'package:smart_app/pages/contacts_page.dart';
+import 'package:smart_app/pages/dev_page.dart';
 
 import 'package:smart_app/pages/settings_page.dart';
 import 'package:smart_app/services/fcm_service.dart';
@@ -30,7 +32,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStateMixin  {
    FcmHandler fcmHandler = new FcmHandler();
-   TabController tabController;
+   TabController _tabController;
    AuthService authService = new AuthService();
    FirebaseAuth _auth = FirebaseAuth.instance;
    ImagesPage _imagesPage ;
@@ -44,19 +46,20 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
   void initState()  {
     super.initState();
     // TODO : Add tab pages count length
-    tabController = new TabController(length: 3, vsync: this);
+    _tabController = new TabController(length: 3, vsync: this );
     _imagesPage = new ImagesPage(widget.user.uid);
     _notificationPage = new NotificationPage(widget.user.uid);
     _sensorsPage = new SensorsPage(widget.user.uid);
     pages = [_imagesPage,_notificationPage,_sensorsPage];
     saveDeviceToken();
-  }
+
+}
 
 
   @override
   void dispose() {
     super.dispose();
-    tabController.dispose();
+    _tabController.dispose();
   }
 
   // Sets current active page
@@ -97,15 +100,16 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
 //                    backgroundColor : Colors.grey[800],
                       radius: 40,
                     ),
-                    Padding(
-                      padding:  EdgeInsets.all(15.0),
-                      child: Text(widget.user.displayName ,style: TextStyle(fontSize: 16),),
-                    )
+                    Spacer(),
+                    Text(widget.user.displayName ,style: TextStyle(fontSize: 14),),
+                    Spacer(),
+                    Text(widget.user.email ,style: TextStyle(fontSize: 12),),
+                    Spacer(),
                   ],
                 ),
-                decoration: BoxDecoration(
-//                  color:Colors.grey[800] ,
-                ),
+//                decoration: BoxDecoration(
+////                  color:Colors.grey[800] ,
+//                ),
               ),
 
               ListTile(
@@ -137,31 +141,69 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
                   Navigator.of(context).push(route);
                 },
               ),
+              new Divider(),
+              ListTile(
+                leading: Icon(Icons.details),
+                title: Text('Source code'),
+                onTap: () {
+                  Navigator.pop(context);
+                  var route = new MaterialPageRoute(builder: (context) =>  DevAppPage());
+                  Navigator.of(context).push(route);
+                },
+              ),
+
 
             ],
           ),
         ),
       ),
-      bottomNavigationBar:  FancyBottomNavigation(
-        circleColor: Colors.deepPurple,
-        activeIconColor: Colors.white ,
-      inactiveIconColor: Colors.white,
-        textColor: Colors.white,
-        barBackgroundColor: Colors.grey[900],
-        tabs: [
-          TabData(iconData: Icons.image, title: "Images" ),
-          TabData(iconData: Icons.notifications, title: "notifications"),
-          TabData(iconData: Icons.device_hub, title: "Sensors")
-        ],
-        onTabChangedListener: (position) {
+      bottomNavigationBar:  BottomNavigationBar(
 
+        currentIndex: _tabController.index,
+        selectedItemColor: Colors.white,
+        unselectedFontSize: 10,
+        selectedFontSize: 12,
+        selectedIconTheme: IconThemeData(size: 28, color: Colors.white),
+//        showSelectedLabels: false,
+        items: [
+
+          BottomNavigationBarItem(
+              icon: Icon(Icons.image),
+              backgroundColor: Colors.deepPurpleAccent,
+//              activeIcon: Icon(Icons.verified_user),
+              title: Text(
+                'Images',
+//                style: TextStyle(fontFamily: 'Lexend Deca' , ),
+              )),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.notifications),
+              title: Text(
+                'Notices',
+//                style: TextStyle(fontFamily: 'Lexend Deca'),
+              )),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.album),
+              title: Text(
+                'Sensors',
+//                style: TextStyle(fontFamily: 'Lexend Deca'),
+              ))
+        ],
+        onTap: (int index) {
           setState(() {
-            currentPage = pages[position];
+            _tabController.index = index;
           });
         },
+
       ),
 //-------------------------------- BODY ----------------------------------------
-      body :currentPage,
+      body :TabBarView(
+        controller: _tabController,
+        children: <Widget>[
+          _imagesPage,
+          _notificationPage,
+          _sensorsPage
+        ],
+      ),
     );
 
   }// widget end

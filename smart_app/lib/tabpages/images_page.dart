@@ -121,8 +121,8 @@ class _ImagesPageState extends State<ImagesPage> with AutomaticKeepAliveClientMi
 //                child: new Text( document.documentID  , style: TextStyle(fontSize: 14),),
 //              ),
               Padding(
-                padding: EdgeInsets.all(10.0),
-                child:  new Image.memory(bytes,scale: 1,),
+                padding: EdgeInsets.all(5.0),
+                child:  new Image.memory(bytes,scale: 1, fit: BoxFit.fill,),
               ),
             ],
           ),

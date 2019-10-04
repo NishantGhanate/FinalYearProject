@@ -33,63 +33,28 @@ class _AboutAppPageState extends State<AboutAppPage>
     return Scaffold(
         appBar: AppBar(
           title: Text('About app'),
-          backgroundColor: Colors.blue,
+          backgroundColor: Colors.grey[600],
         ),
         body: Container(
-          color: Colors.black12,
-          child: new Column(
+          child: Column(
             children: <Widget>[
               Padding(
-              padding: EdgeInsets.all(25.0),
-                child:  CircleAvatar(
-                  backgroundImage: NetworkImage('https://avatars1.githubusercontent.com/u/26281560?s=460&v=4'),
-                  radius: 100,
-                ),
-              ),
-
-              Padding(
-                padding: EdgeInsets.all(25.0),
-                child: new Text(
-                  'Hello ! My name is Nishant Ghanate and'
-                  ' This is first flutter app which i had made in my final year project for year 2020 .\n\n'
-                  'This is an pretty naive application , i will be happy  if anyone could contrinute thier ideas and extennd this app futher',
-                  style: TextStyle(color: Colors.white, fontSize: 18),
-                ),
+                padding: EdgeInsets.fromLTRB(70,55,0,0),
+                child: Image.asset('assets/icons/logo.png' , ),
               ),
               Padding(
-                padding: EdgeInsets.all(15.0) ,
-                child: new RaisedButton(
-                  onPressed: () {
-                    String url =
-                        'https://docs.google.com/presentation/d/1CHybxaSqHeoeLkoh-vqelIEi8K-K_FK3gluK_C3RHuE/edit#slide=id.g55d16254f0_1_21';
-                    _launchURL(url);
-                  },
-                  color: Colors.amber[600],
-                  child: new Text('Project PPT '),
-                ),
+                padding: EdgeInsets.fromLTRB(70,55,0,20),
+                child: Text( ' Version 0.1 ' , style:  TextStyle(fontSize: 14),),
               ),
               Padding(
-                padding: EdgeInsets.all(15.0),
-                child:     new RaisedButton(
-                  onPressed: () {
-                    String url =
-                        'https://github.com/NishantGhanate/FinalYearProject/tree/MobileApp/smart_app';
-                    _launchURL(url);
-                  },
-                  child: new Text('Source Code'),
-                ),
-              )
+                padding: EdgeInsets.fromLTRB(50,55,0,20),
+                child: Text(' Features : \n\n - Notification on motion with image \n\n - Alert on Temrature rise  \n\n - Live Sensors data  \n\n - BuiltIn caller ' , style:  TextStyle(fontSize: 16),),
+              ),
             ],
           ),
-        ));
-  }
-
-  _launchURL(url) async {
-//    const url = '';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
+        )
+      );
     }
-  }
+
+
 }
