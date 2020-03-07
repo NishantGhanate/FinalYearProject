@@ -29,6 +29,10 @@ Hi! i'm excited to start & share my final year project progression .
 
 
 # Python packages to install version 3.6 + :
+> console : pip install -r /path/to/requirements.txt
+
+
+# Packages used in this project
 
 > pip install PyQt5 
 

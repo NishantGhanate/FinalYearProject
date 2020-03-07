@@ -23,14 +23,14 @@
 
 FirebaseData firebaseData;
 // Firebase path e.g users/uid/sensors/name
-String ldrPath = "users/3shcyGOhrdMgI4PLZTCf66y0wMZ2/sensors/ldr";
-String pirPath = "users/3shcyGOhrdMgI4PLZTCf66y0wMZ2/sensors/pir";
-String tempPath = "users/3shcyGOhrdMgI4PLZTCf66y0wMZ2/sensors/temp";
-String buzzPath = "users/3shcyGOhrdMgI4PLZTCf66y0wMZ2/sensors/buzz";
+String ldrPath = "users/3shcyGOhrdMgI4PLZTCf66y0wMZ2/sensors/ldr/value";
+String pirPath = "users/3shcyGOhrdMgI4PLZTCf66y0wMZ2/sensors/pir/value";
+String tempPath = "users/3shcyGOhrdMgI4PLZTCf66y0wMZ2/sensors/temp/value";
+String buzzPath = "users/3shcyGOhrdMgI4PLZTCf66y0wMZ2/sensors/buzz/value";
 
 const int buzzerStatus = 12;  // Digital pin D6 on Esp8266 , GPIO where the BUZZER is connected to 
 const int pirSensor = 13;  // Digital pin D7 on Esp8266 , GPIO where the PIRSENSOR is connected to 
-const int oneWireBus = 4;  // Digital pin D7 on Esp8266 , GPIO where the DS18B20 is connected to 
+const int oneWireBus = 4;  // Digital pin D2 on Esp8266 , GPIO where the DS18B20 is connected to 
 
 // Guide : https://randomnerdtutorials.com/esp8266-ds18b20-temperature-sensor-web-server-with-arduino-ide/
 
@@ -73,17 +73,16 @@ void sendSMS()
 
 void notifyUser()
 {
-   String FIREBASE_FCM_DEVICE_TOKEN;
+  String FIREBASE_FCM_DEVICE_TOKEN; 
  if ( Firebase.getString(firebaseData,"users/3shcyGOhrdMgI4PLZTCf66y0wMZ2/fcmtoken"))
  {
-     FIREBASE_FCM_DEVICE_TOKEN = firebaseData.stringData(); 
-     
+     FIREBASE_FCM_DEVICE_TOKEN = firebaseData.stringData();     
  }
   
   // https://stackoverflow.com/questions/37427709/firebase-messaging-where-to-get-server-key
-  String SERVER_TOKEN = "AAAAZO2W-fI:APA91bG9OOHHBkh-VLc0XBHVYFs9vV0Bg4YWRYsu1NYSBc7xfF1t9YtLryacTOR6su3XhOunShHhONhyclapCOe__SK97cXYd6gRdPBgtnsmKG1JlyRurnLCygnjpZ63O5nxGJHNIBAU";
+  // String SERVER_TOKEN = "AAAAZO2W-fI:APA91bG9OOHHBkh-VLc0XBHVYFs9vV0Bg4YWRYsu1NYSBc7xfF1t9YtLryacTOR6su3XhOunShHhONhyclapCOe__SK97cXYd6gRdPBgtnsmKG1JlyRurnLCygnjpZ63O5nxGJHNIBAU";
 
-  firebaseData.fcm.begin(SERVER_TOKEN);
+  firebaseData.fcm.begin(FIREBASE_FCM_DEVICE_TOKEN);
   
   firebaseData.fcm.addDeviceToken(FIREBASE_FCM_DEVICE_TOKEN); //Prvide one or more the recipient registered token or instant ID token
   

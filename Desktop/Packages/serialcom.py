@@ -13,14 +13,15 @@ class SerialCom:
     def setData(self,data):
         self.ser.write(data.encode())
   
-        
-             
-serialCom =  SerialCom('COM5',9600)
 
-for i in range(20):
-    serialCom.getData()
-    time.sleep(1)
-    serialCom.setData("400,200")  
-    
+
+ if __name__ == "__main__":          
+    serialCom =  SerialCom('COM5',9600)
+
+    for i in range(20):
+        serialCom.getData()
+        time.sleep(1)
+        serialCom.setData("400,200")  
+        
      
         

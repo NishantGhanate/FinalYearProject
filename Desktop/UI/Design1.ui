@@ -16,6 +16,11 @@
     <height>726</height>
    </size>
   </property>
+  <property name="font">
+   <font>
+    <pointsize>12</pointsize>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
@@ -55,7 +60,7 @@ border-width:2.2px;
 background-color: #4CAF50; /* Green */
 color: white
  }
-QPushButton#pushButtonStop
+QPushButton#pushButtonStop 
 {
 font-size: 16px;
 background-color: white;
@@ -107,6 +112,33 @@ background-color: #008CBA; /* BLUE */
 color: white
  }
 
+QPushButton#pushButtonClearLog
+{
+font-size: 16px;
+background-color: white;
+border-color:#f44336; 
+border-radius: 2px;
+padding: 4px;	
+border-style: inset;
+border-width:1.2px;
+ }
+
+
+QPushButton#pushButtonClearLog:hover 
+{
+border-style: outset;
+border-width:1.2px;
+background-color: #f44336; /* RED */
+color: white
+ }
+QPushButton#pushButtonClearLog:pressed 
+{
+border-style: outset;
+border-width:2.2px;
+background-color: #f44336; /* RED */
+color: white
+ }
+
 
 QPushButton#pushButtonVerify
 {
@@ -132,7 +164,43 @@ border-style: outset;
 border-width:2.2px;
 background-color: #555555; /* Grey */
 color: white
- }</string>
+ }
+
+
+
+
+QPushButton#pushButtonTelegram
+{
+font-size: 16px;
+background-color: white;
+border-color:#555555;
+border-radius: 2px;
+padding: 4px;	
+border-style: inset;
+border-width:1.2px;
+ }
+QPushButton#pushButtonTelegram:hover 
+{
+border-style: outset;
+border-width:1.2px;
+background-color: #555555; /* Grey */
+color: white
+ }
+QPushButton#pushButtonTelegram:pressed 
+{
+border-style: outset;
+border-width:2.2px;
+background-color: #555555; /* Grey */
+color: white
+ }
+
+
+
+
+
+
+
+</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QLabel" name="QlabelCamera">
@@ -140,8 +208,8 @@ color: white
      <rect>
       <x>40</x>
       <y>70</y>
-      <width>680</width>
-      <height>480</height>
+      <width>571</width>
+      <height>501</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -157,8 +225,8 @@ color: white
    <widget class="QPushButton" name="pushButtonStart">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>650</y>
+      <x>50</x>
+      <y>640</y>
       <width>101</width>
       <height>31</height>
      </rect>
@@ -175,15 +243,15 @@ color: white
    <widget class="QPushButton" name="pushButtonStop">
     <property name="geometry">
      <rect>
-      <x>170</x>
-      <y>650</y>
+      <x>180</x>
+      <y>640</y>
       <width>101</width>
       <height>31</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>10</pointsize>
+      <pointsize>1</pointsize>
      </font>
     </property>
     <property name="text">
@@ -193,15 +261,15 @@ color: white
    <widget class="QPushButton" name="pushButtonSaveLog">
     <property name="geometry">
      <rect>
-      <x>780</x>
-      <y>580</y>
+      <x>990</x>
+      <y>590</y>
       <width>101</width>
       <height>31</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>10</pointsize>
+      <pointsize>1</pointsize>
      </font>
     </property>
     <property name="text">
@@ -211,8 +279,8 @@ color: white
    <widget class="QLabel" name="labelLogs">
     <property name="geometry">
      <rect>
-      <x>780</x>
-      <y>250</y>
+      <x>680</x>
+      <y>260</y>
       <width>141</width>
       <height>31</height>
      </rect>
@@ -230,8 +298,8 @@ color: white
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>600</y>
-      <width>151</width>
+      <y>590</y>
+      <width>91</width>
       <height>21</height>
      </rect>
     </property>
@@ -247,9 +315,9 @@ color: white
    <widget class="QRadioButton" name="radioButtonOffline">
     <property name="geometry">
      <rect>
-      <x>150</x>
-      <y>600</y>
-      <width>141</width>
+      <x>190</x>
+      <y>590</y>
+      <width>81</width>
       <height>21</height>
      </rect>
     </property>
@@ -265,15 +333,15 @@ color: white
    <widget class="QPushButton" name="pushButtonVerify">
     <property name="geometry">
      <rect>
-      <x>790</x>
-      <y>120</y>
-      <width>101</width>
+      <x>680</x>
+      <y>150</y>
+      <width>121</width>
       <height>31</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>10</pointsize>
+      <pointsize>1</pointsize>
      </font>
     </property>
     <property name="text">
@@ -283,42 +351,42 @@ color: white
    <widget class="QLabel" name="labelUid">
     <property name="geometry">
      <rect>
-      <x>790</x>
-      <y>30</y>
-      <width>261</width>
-      <height>21</height>
+      <x>680</x>
+      <y>70</y>
+      <width>141</width>
+      <height>16</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>14</pointsize>
+      <pointsize>12</pointsize>
      </font>
     </property>
     <property name="text">
-     <string>Please Enter your UID :</string>
+     <string>Firebaser UID :</string>
     </property>
    </widget>
    <widget class="QListWidget" name="listWidgetLogs">
     <property name="geometry">
      <rect>
-      <x>780</x>
-      <y>290</y>
-      <width>331</width>
-      <height>261</height>
+      <x>680</x>
+      <y>320</y>
+      <width>411</width>
+      <height>251</height>
      </rect>
     </property>
    </widget>
    <widget class="QLCDNumber" name="lcdNumber">
     <property name="geometry">
      <rect>
-      <x>900</x>
-      <y>250</y>
-      <width>201</width>
+      <x>800</x>
+      <y>260</y>
+      <width>291</width>
       <height>31</height>
      </rect>
     </property>
     <property name="autoFillBackground">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="frameShape">
      <enum>QFrame::StyledPanel</enum>
@@ -327,7 +395,7 @@ color: white
    <widget class="QLabel" name="labelMode">
     <property name="geometry">
      <rect>
-      <x>50</x>
+      <x>40</x>
       <y>30</y>
       <width>251</width>
       <height>21</height>
@@ -351,11 +419,70 @@ color: white
    <widget class="QLineEdit" name="lineEditUid">
     <property name="geometry">
      <rect>
-      <x>790</x>
+      <x>680</x>
+      <y>100</y>
+      <width>190</width>
+      <height>25</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelToken">
+    <property name="geometry">
+     <rect>
+      <x>930</x>
       <y>70</y>
-      <width>271</width>
+      <width>141</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Telegram Token :</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButtonTelegram">
+    <property name="geometry">
+     <rect>
+      <x>930</x>
+      <y>150</y>
+      <width>121</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="text">
+     <string>Verify</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEditToken">
+    <property name="geometry">
+     <rect>
+      <x>930</x>
+      <y>100</y>
+      <width>190</width>
+      <height>25</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButtonClearLog">
+    <property name="geometry">
+     <rect>
+      <x>680</x>
+      <y>590</y>
+      <width>101</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Clear logs</string>
     </property>
    </widget>
   </widget>
