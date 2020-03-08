@@ -26,3 +26,35 @@ Hi! i'm excited to start & share my final year project progression .
 
 # Flow Diagram
 ![](https://github.com/NishantGhanate/FinalYearProject/blob/master/Desktop/UI/Assests/FlowDiagram.png)
+
+# Install Python version 3.6+ and packages :
+> console : pip install -r /path/to/requirements.txt
+
+# You can also install packages manually  
+
+> pip install PyQt5 
+
+> pip install PyQt5-tools
+
+> pip install opencv-contrib-python
+
+> pip install pip install asyncio
+
+> pip install firebase_admin
+
+> pip install telegram
+
+> pip install numpy
+
+# How to make telegram bot
+
+> https://docs.microsoft.com/en-us/azure/bot-service/bot-service-channel-connect-telegram?view=azure-bot-service-4.0
+
+save the bot token in this project Desktop/Config/User.json 
+Replace it with <br>
+{ <br>
+    token : ' ---   ' 
+    <br>
+}
+
+
