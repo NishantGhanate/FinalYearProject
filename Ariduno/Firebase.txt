@@ -1,0 +1,113 @@
+// Implement Fcm 
+void notifyUser()
+{
+    //Provide your Firebase project's server key here
+firebaseData.fcm.begin(SERVER_TOKEN);
+
+//Prvide one or more the recipient registered token or instant ID token
+firebaseData.fcm.addDeviceToken(FIREBASE_FCM_DEVICE_TOKEN);
+
+//Provide the priority (optional)
+firebaseData.fcm.setPriority("normal");
+
+//Provide the time to live (optional)
+firebaseData.fcm.setTimeToLive(5000);
+
+//Set the notification message data
+firebaseData.fcm.setNotifyMessage("Notification", "Hello World!", "firebase-logo.png", "http://www.google.com");
+
+//Set the custom message data
+firebaseData.fcm.setDataMessage("{\"myData\":\"myValue\"}");
+
+//Send message to one recipient with inddex 1 (index starts from 0)
+if (Firebase.sendMessage(firebaseData, 1))
+{
+  //Success, print the result returned from server
+  Serial.println(firebaseData.fcm.getSendResult());
+}
+else
+{
+  //Failed, print the error reason
+  Serial.println(firebaseData.errorReason());
+}
+
+}
+
+
+
+/////////////////////////
+
+
+
+// Firebase path e.g users/uid/sensors/name
+String ldrPath = "users/3shcyGOhrdMgI4PLZTCf66y0wMZ2/sensors/ldr";
+String pirPath = "users/3shcyGOhrdMgI4PLZTCf66y0wMZ2/sensors/pir";
+String tempPath = "users/3shcyGOhrdMgI4PLZTCf66y0wMZ2/sensors/temp";
+String buzzPath = "users/3shcyGOhrdMgI4PLZTCf66y0wMZ2/sensors/buzz";
+
+String FIREBASE_FCM_DEVICE_TOKEN = "users/3shcyGOhrdMgI4PLZTCf66y0wMZ2/fcmtoken";
+// https://stackoverflow.com/questions/37427709/firebase-messaging-where-to-get-server-key
+String SERVER_TOKEN = "AAAAZO2W-fI:APA91bG9OOHHBkh-VLc0XBHVYFs9vV0Bg4YWRYsu1NYSBc7xfF1t9YtLryacTOR6su3XhOunShHhONhyclapCOe__SK97cXYd6gRdPBgtnsmKG1JlyRurnLCygnjpZ63O5nxGJHNIBAU";
+
+// 3. Declare the Firebase Data object in global scope
+FirebaseData firebaseData;
+
+const int buzzerStatus = 12;  // Digital pin D6 on Esp8266 , GPIO where the BUZZER is connected to 
+
+const int pirSensor = 13;  // Digital pin D7 on Esp8266 , GPIO where the PIRSENSOR is connected to 
+
+const int oneWireBus = 4;  // Digital pin D7 on Esp8266 , GPIO where the DS18B20 is connected to 
+
+
+// Guide : https://randomnerdtutorials.com/esp8266-ds18b20-temperature-sensor-web-server-with-arduino-ide/
+OneWire oneWire(oneWireBus); // Setup a oneWire instance to communicate with any OneWire devices
+
+// Pass our oneWire reference to Dallas Temperature sensor 
+DallasTemperature sensors(&oneWire);
+
+////////////////////////////////////////////////////////
+
+
+  sensors.requestTemperatures(); 
+  float temperatureC = sensors.getTempCByIndex(0);
+  
+  long pirState = digitalRead(pirSensor);
+  
+  Firebase.setFloat(firebaseData,tempPath,temperatureC);
+  Firebase.setInt(firebaseData,buzzPath,1);
+  Firebase.setInt(firebaseData,pirPath,1);
+  Firebase.setInt(firebaseData,ldrPath,1);
+  
+  if ( pirState == HIGH || temperatureC > 45.00 )
+  {
+      digitalWrite (buzzerStatus, HIGH);
+      Serial.println("Motion detected!");
+      notifyUser();
+      delay(1000);
+  }
+  else
+  {
+    digitalWrite (buzzerStatus, LOW);
+  }
+
+  
+  Serial.begin(9600);
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+  Serial.print("connecting");
+  while (WiFi.status() != WL_CONNECTED) {
+    Serial.print(".");
+    delay(500);
+  }
+  Serial.println();
+  Serial.print("connected: ");
+  Serial.println(WiFi.localIP());
+
+  // 4. Setup Firebase credential in setup() got to step 2. comment 
+  Firebase.begin("https://smartsecurity-38229.firebaseio.com/", "bx5oEHYlFiNAatcISAVoyVhlYLDncoNIkqTi8XNt");
+  Firebase.reconnectWiFi(true);
+ // 6. Optional, set number of error retry
+ Firebase.setMaxRetry(firebaseData, 5);
+
+ // 5. Setting up pin number and mode
+  pinMode(pirSensor, INPUT);   // declare pirSensor as input
+  pinMode(buzzerStatus, OUTPUT);  // declare Buzzer as output
