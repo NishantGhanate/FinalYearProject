@@ -106,6 +106,8 @@ class _FcmHandlerState  extends State<FcmHandler>{
           .child(uid);
 
       fmcRef.update({"fcmtoken" : fcmToken });
+      
+
 
     }
 

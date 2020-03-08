@@ -48,7 +48,7 @@ class _AboutAppPageState extends State<AboutAppPage>
               ),
               Padding(
                 padding: EdgeInsets.fromLTRB(50,55,0,20),
-                child: Text(' Features : \n\n - Notification on motion with image \n\n - Alert on Temrature rise  \n\n - Live Sensors data  \n\n - BuiltIn caller ' , style:  TextStyle(fontSize: 16),),
+                child: Text(' Features : \n\n - Notification on motion with image \n\n - Alert on Temprature rise  \n\n - Live Sensors data  \n\n - BuiltIn caller ' , style:  TextStyle(fontSize: 16),),
               ),
             ],
           ),

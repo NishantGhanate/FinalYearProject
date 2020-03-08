@@ -41,9 +41,9 @@ class _SensorsPageState extends State<SensorsPage> with AutomaticKeepAliveClient
         .child("users")
         .child(widget.userId)
         .child("sensors");
-//    _todoQuery.once().then((DataSnapshot snapshot) {
-//      print('Data : ${snapshot.value}');
-//    });
+    _todoQuery.once().then((DataSnapshot snapshot) {
+      print('Data : ${snapshot.value}');
+    });
     _onTodoAddedSubscription = _todoQuery.onChildAdded.listen(_onEntryAdded);
     _onTodoChangedSubscription = _todoQuery.onChildChanged.listen(_onEntryChanged);
 
@@ -77,7 +77,7 @@ class _SensorsPageState extends State<SensorsPage> with AutomaticKeepAliveClient
     //Toggle completed
     todo.value = (todo.value);
     if (todo != null) {
-      _database.reference().child("user").child(todo.key).set(todo.toJson());
+      _database.reference().child("users").child(todo.key).set(todo.toJson());
     }
   }
 

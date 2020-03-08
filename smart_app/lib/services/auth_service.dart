@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -40,6 +41,28 @@ class AuthService implements BaseAuth {
     assert(authResult.user.uid == currentUser.uid);
     _db.settings(persistenceEnabled: true);
     print("signed in " + currentUser.displayName);
+
+    FirebaseUser firebaseUser = await _auth.currentUser();
+    String uid = firebaseUser.uid;
+    final FirebaseDatabase _database = FirebaseDatabase.instance;
+    var sensors = _database
+        .reference()
+        .child("users")
+        .child(uid)
+        .child('sensors');
+
+    sensors.child('ldr').update({'value':0});
+    sensors.child('ldr').update({'icon':'https://i.imgur.com/ZIjIO6m.png'});
+
+    sensors.child('temp').update({'value':0});
+    sensors.child('temp').update({'icon':'https://i.imgur.com/b8xvTTf.png'});
+
+    sensors.child('buzz').update({'value':0});
+    sensors.child('buzz').update({'icon':'https://i.imgur.com/NGeM4Rp.png'});
+
+    sensors.child('pir').update({'value':0});
+    sensors.child('pir').update({'icon':'https://i.imgur.com/hhKmC8W.png'});
+
 
     return currentUser;
   }

@@ -1,0 +1,107 @@
+ _tabController = new TabController(length: 3, vsync: this );      
+
+bottomNavigationBar:  FancyBottomNavigation(
+        circleColor: Colors.deepPurple,
+        activeIconColor: Colors.white ,
+      inactiveIconColor: Colors.white,
+        textColor: Colors.white,
+        barBackgroundColor: Colors.grey[900],
+        tabs: [
+          TabData(iconData: Icons.image, title: "Images" ),
+          TabData(iconData: Icons.notifications, title: "notifications"),
+          TabData(iconData: Icons.device_hub, title: "Sensors")
+        ],
+        initialSelection: 0,
+        onTabChangedListener: (position) {
+
+          setState(() {
+            currentPage = pages[position];
+          });
+        },
+      ),
+//-------------------------------- BODY ----------------------------------------
+      body :currentPage,
+    );
+
+  }//
+
+
+      bottomNavigationBar:  BottomNavigationBar(
+        currentIndex: _tabController.index,
+        items: [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.image),
+              title: Text(
+                'Images',
+                style: TextStyle(fontFamily: 'Lexend Deca'),
+              )),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.notifications),
+              title: Text(
+                'Notices',
+                style: TextStyle(fontFamily: 'Lexend Deca'),
+              )),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.album),
+              title: Text(
+                'Sensors',
+                style: TextStyle(fontFamily: 'Lexend Deca'),
+              ))
+        ],
+        onTap: (int index) {
+          setState(() {
+            _tabController.index = index;
+          });
+        },
+
+      ),
+
+
+      body :TabBarView(
+        controller: _tabController,
+        children: <Widget>[
+          _imagesPage,
+          _notificationPage,
+          _sensorsPage
+        ],
+      ),
+    );
+
+
+
+
+
+    body :Column(      // Column
+        children: <Widget>[
+          Container(
+            color: Colors.deepOrangeAccent,        // Tab Bar color change
+            child: TabBar(           // TabBar
+              controller: _tabController,
+              unselectedLabelColor: Colors.lightBlue[100],
+              labelColor: const Color(0xFF3baee7),
+              indicatorWeight: 2,
+              indicatorColor: Colors.blue[100],
+              tabs: <Widget>[
+                Tab(
+                  text: "All Jobs",
+                ),
+                Tab(
+                  text: "Most Recent",
+                ),
+                Tab(
+                  text: "Saved Jobs",
+                )
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: TabBarView(         // Tab Bar View
+              physics: BouncingScrollPhysics(),
+              controller: _tabController,
+              children: <Widget>[_imagesPage,_notificationPage,_sensorsPage],
+            ),
+          ),
+        ],
+      ),
+    );

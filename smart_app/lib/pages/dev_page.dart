@@ -40,24 +40,7 @@ class _DevPageState extends State<DevAppPage>
           child: new Column(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.all(25.0),
-                child:  CircleAvatar(
-                  backgroundImage: NetworkImage('https://avatars1.githubusercontent.com/u/26281560?s=460&v=4'),
-                  radius: 100,
-                ),
-              ),
-
-              Padding(
-                padding: EdgeInsets.all(25.0),
-                child: new Text(
-                  'Hello ! My name is Nishant Ghanate and'
-                      ' This is first flutter app which i had made in my final year project for year 2020 .\n\n'
-                      'This is an pretty naive application , i will be happy  if anyone could contrinute thier ideas and extennd this app futher',
-                  style: TextStyle(color: Colors.white, fontSize: 18),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(15.0) ,
+                padding: EdgeInsets.all(140.0) ,
                 child: new RaisedButton(
                   onPressed: () {
                     String url =
@@ -69,7 +52,7 @@ class _DevPageState extends State<DevAppPage>
                 ),
               ),
               Padding(
-                padding: EdgeInsets.all(15.0),
+                padding: EdgeInsets.all(25.0),
                 child:     new RaisedButton(
                   onPressed: () {
                     String url =
