@@ -1,0 +1,4 @@
+# doc_ref = self.db.collection(self.__user).document(uid)
+# self.__data = doc_ref.get()
+# for d in self.__data:
+#     print(u"{} u{}".format(d.id,d.to_dict() ))

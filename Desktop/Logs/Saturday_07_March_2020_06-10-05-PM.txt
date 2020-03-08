@@ -1,0 +1,83 @@
+OFFLINE - MODE : 2020-03-07 18:09:59.458517
+ diff = 30060244 ,  threshold = 1694200 
+Saturday 07 March 2020 06-10-03-PM
+Image saved = G:\Github\FinalYearProject\Desktop\Media\Images\Saturday 07 March 2020 06-10-03-PM.jpg
+ diff = 16606866 ,  threshold = 1694200 
+ diff = 16606866 ,  threshold = 1694200 
+ diff = 16606866 ,  threshold = 1694200 
+ diff = 16606866 ,  threshold = 1694200 
+ diff = 16606866 ,  threshold = 1694200 
+ diff = 16606866 ,  threshold = 1694200 
+ diff = 16606866 ,  threshold = 1694200 
+ diff = 16606866 ,  threshold = 1694200 
+ diff = 16606866 ,  threshold = 1694200 
+ diff = 16606866 ,  threshold = 1694200 
+ diff = 16606866 ,  threshold = 1694200 
+ diff = 16606866 ,  threshold = 1694200 
+ diff = 16606866 ,  threshold = 1694200 
+ diff = 16606866 ,  threshold = 1694200 
+ diff = 16606866 ,  threshold = 1694200 
+Saturday 07 March 2020 06-10-04-PM
+Image saved = G:\Github\FinalYearProject\Desktop\Media\Images\Saturday 07 March 2020 06-10-04-PM.jpg
+ diff = 39014400 ,  threshold = 1694200 
+ diff = 39014400 ,  threshold = 1694200 
+ diff = 39014400 ,  threshold = 1694200 
+ diff = 39014400 ,  threshold = 1694200 
+ diff = 39014400 ,  threshold = 1694200 
+ diff = 39014400 ,  threshold = 1694200 
+ diff = 39014400 ,  threshold = 1694200 
+ diff = 39014400 ,  threshold = 1694200 
+ diff = 39014400 ,  threshold = 1694200 
+ diff = 39014400 ,  threshold = 1694200 
+ diff = 39014400 ,  threshold = 1694200 
+ diff = 39014400 ,  threshold = 1694200 
+Saturday 07 March 2020 06-10-05-PM
+Image saved = G:\Github\FinalYearProject\Desktop\Media\Images\Saturday 07 March 2020 06-10-05-PM.jpg
+ diff = 0 ,  threshold = 1694200 
+ diff = 0 ,  threshold = 1694200 
+ diff = 0 ,  threshold = 1694200 
+ diff = 0 ,  threshold = 1694200 
+ diff = 0 ,  threshold = 1694200 
+ diff = 0 ,  threshold = 1694200 
+OFFLINE - MODE : 2020-03-07 18:09:59.458517
+ diff = 30060244 ,  threshold = 1694200 
+Saturday 07 March 2020 06-10-03-PM
+Image saved = G:\Github\FinalYearProject\Desktop\Media\Images\Saturday 07 March 2020 06-10-03-PM.jpg
+ diff = 16606866 ,  threshold = 1694200 
+ diff = 16606866 ,  threshold = 1694200 
+ diff = 16606866 ,  threshold = 1694200 
+ diff = 16606866 ,  threshold = 1694200 
+ diff = 16606866 ,  threshold = 1694200 
+ diff = 16606866 ,  threshold = 1694200 
+ diff = 16606866 ,  threshold = 1694200 
+ diff = 16606866 ,  threshold = 1694200 
+ diff = 16606866 ,  threshold = 1694200 
+ diff = 16606866 ,  threshold = 1694200 
+ diff = 16606866 ,  threshold = 1694200 
+ diff = 16606866 ,  threshold = 1694200 
+ diff = 16606866 ,  threshold = 1694200 
+ diff = 16606866 ,  threshold = 1694200 
+ diff = 16606866 ,  threshold = 1694200 
+Saturday 07 March 2020 06-10-04-PM
+Image saved = G:\Github\FinalYearProject\Desktop\Media\Images\Saturday 07 March 2020 06-10-04-PM.jpg
+ diff = 39014400 ,  threshold = 1694200 
+ diff = 39014400 ,  threshold = 1694200 
+ diff = 39014400 ,  threshold = 1694200 
+ diff = 39014400 ,  threshold = 1694200 
+ diff = 39014400 ,  threshold = 1694200 
+ diff = 39014400 ,  threshold = 1694200 
+ diff = 39014400 ,  threshold = 1694200 
+ diff = 39014400 ,  threshold = 1694200 
+ diff = 39014400 ,  threshold = 1694200 
+ diff = 39014400 ,  threshold = 1694200 
+ diff = 39014400 ,  threshold = 1694200 
+ diff = 39014400 ,  threshold = 1694200 
+Saturday 07 March 2020 06-10-05-PM
+Image saved = G:\Github\FinalYearProject\Desktop\Media\Images\Saturday 07 March 2020 06-10-05-PM.jpg
+ diff = 0 ,  threshold = 1694200 
+ diff = 0 ,  threshold = 1694200 
+ diff = 0 ,  threshold = 1694200 
+ diff = 0 ,  threshold = 1694200 
+ diff = 0 ,  threshold = 1694200 
+ diff = 0 ,  threshold = 1694200 
+Logs saved Sucessfully to location = G:\Github\FinalYearProject\Desktop\Logs\Saturday_07_March_2020_06-10-05-PM.txt 

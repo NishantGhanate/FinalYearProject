@@ -1,0 +1,93 @@
+
+        /storage/emulated/0/Android/data/com.example.smart_app/files
+
+        try {
+//          final ByteData bytes = await rootBundle.load('assets/image.jpg');
+          final Uint8List list = bytes.buffer.asUint8List();
+
+          final dir = await getExternalStorageDirectory();
+          final file = await new File('${dir.path}/image3.jpg').create();
+          file.writeAsBytesSync(list);
+          print('${dir.path}/image.jpg');
+
+
+//          final channel = const MethodChannel('channel:me.albie.share/share');
+//          channel.invokeMethod('shareFile', 'image.jpg');
+
+        } catch (e) {
+          print('Share error: $e');
+        }
+
+//        final directory = await getApplicationDocumentsDirectory();
+//        final file = File('${directory.path}/my_file.txt');
+//        await file.writeAsString("Fluttter file write text");
+
+
+//        final result = await ImageGallerySaver.saveImage(Uint8List.fromList(bytes));
+//        print(result);
+//        result.exists().then((isThere) {
+//          isThere ? print('exists') : print('non-existent');
+//        });
+//        new Directory('smartapp_images').create()
+//        // The created directory is returned as a Future.
+//            .then((Directory directory) {
+//          print(directory.path);
+//        });
+
+
+     try {
+          final ByteData bytes = await rootBundle.load('assets/images/poly1.jpg');
+          final Uint8List list = bytes.buffer.asUint8List();
+
+          final tempDir = await getTemporaryDirectory();
+          final file = await new File('${tempDir.path}/image.jpg').create();
+          file.writeAsBytesSync(list);
+
+          final channel = const MethodChannel('channel:me.albie.share/share');
+          channel.invokeMethod('shareFile', 'image.jpg');
+
+        } catch (e) {
+          print('Share error: $e');
+        }
+
+
+
+        //        final Uint8List list = bytes.buffer.asUint8List();
+        //
+        //        final dir = await getExternalStorageDirectory();
+        //
+        //        final file = await new File('smartapp/image3.jpg').create();
+        //        file.writeAsBytesSync(list);
+        //        print('${dir.path}/image.jpg');
+
+        //        var dir = await getExternalStorageDirectory();
+        //        var knockDir =
+        //        await new Directory('Main/iLearn').create(recursive: true);
+        //        print(knockDir);
+
+        //        Directory appDocDirectory = await getApplicationDocumentsDirectory();
+        //
+        //        new Directory(appDocDirectory.path+'/'+'dir').create(recursive: true)
+        //      // The created directory is returned as a Future.
+        //                  .then((Directory directory) {
+        //                print('Path of New Dir: '+directory.path);
+        //              });
+        //
+
+
+                try{
+                     var tempDir = await getTemporaryDirectory();
+                     var savePath = '${tempDir.path}/image.jpg';
+                     final file = await new File(savePath).create();
+                     file.writeAsBytesSync(bytes);
+                     print(savePath);
+                     final uri = Uri.file(savePath);
+                     SimpleShare.share(
+                         uri: uri.toString(),
+                         title: 'Titi',
+                         msg: 'Massage'
+                     );
+                   }
+                   catch(e){
+                     print('error: $e');
+                   }

@@ -1,0 +1,10 @@
+    async def s(self):
+        print('SSSS')
+        await self.a()
+    
+    async def a(self):
+        print('AAA')
+        
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(self.s())

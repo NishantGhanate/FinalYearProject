@@ -1,0 +1,21 @@
+    return Card(
+      shape: new RoundedRectangleBorder(
+          side: new BorderSide(color: Colors.grey[700], width: 2.0),
+          borderRadius: BorderRadius.circular(4.0)),
+      elevation: 5.0,
+      child: new Container(
+        margin: const EdgeInsets.only(top: 20.0,),
+        alignment: Alignment.center,
+//          child: new Text( document.documentID +'\n' +document['value'] , style: TextStyle(fontSize: 10),),
+        child: Column(
+          children: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(10.0),
+            child: new Image.network("https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Rotating_earth_%28large%29.gif/200px-Rotating_earth_%28large%29.gif",scale: 2,),
+          ),
+            new Text("Sesnor : " + key + "\n" , style: TextStyle(fontSize: 14,),),
+            new Text("Value : " + value , style: TextStyle(fontSize: 14,),),
+          ],
+        ),
+      ),
+    );
