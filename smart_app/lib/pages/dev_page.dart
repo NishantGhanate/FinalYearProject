@@ -35,32 +35,26 @@ class _DevPageState extends State<DevAppPage>
           title: Text('Source Code'),
           backgroundColor: Colors.blue,
         ),
-        body: Container(
-          color: Colors.black12,
+        body: Center(
           child: new Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(140.0) ,
-                child: new RaisedButton(
-                  onPressed: () {
-                    String url =
-                        'https://docs.google.com/presentation/d/1CHybxaSqHeoeLkoh-vqelIEi8K-K_FK3gluK_C3RHuE/edit#slide=id.g55d16254f0_1_21';
-                    _launchURL(url);
-                  },
-                  color: Colors.amber[600],
-                  child: new Text('Project PPT '),
-                ),
+              new RaisedButton(
+                onPressed: () {
+                  String url =
+                      'https://docs.google.com/presentation/d/1CHybxaSqHeoeLkoh-vqelIEi8K-K_FK3gluK_C3RHuE/edit#slide=id.g55d16254f0_1_21';
+                  _launchURL(url);
+                },
+                color: Colors.amber[600],
+                child: new Text('Project PPT '),
               ),
-              Padding(
-                padding: EdgeInsets.all(25.0),
-                child:     new RaisedButton(
-                  onPressed: () {
-                    String url =
-                        'https://github.com/NishantGhanate/FinalYearProject/tree/MobileApp/smart_app';
-                    _launchURL(url);
-                  },
-                  child: new Text('Source Code'),
-                ),
+              new RaisedButton(
+                onPressed: () {
+                  String url =
+                      'https://github.com/NishantGhanate/FinalYearProject/tree/MobileApp/smart_app';
+                  _launchURL(url);
+                },
+                child: new Text('Source Code'),
               )
             ],
           ),

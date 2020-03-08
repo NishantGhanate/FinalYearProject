@@ -3,12 +3,14 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:smart_app/pages/root_page.dart';
 import 'package:smart_app/services/auth_service.dart';
 import 'package:smart_app/services/fcm_service.dart';
 
 
 void main() async{
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   FcmHandler();
   runApp(MyApp());
 }
