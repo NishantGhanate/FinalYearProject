@@ -317,7 +317,7 @@ color: white
      <rect>
       <x>190</x>
       <y>590</y>
-      <width>81</width>
+      <width>111</width>
       <height>21</height>
      </rect>
     </property>
@@ -431,7 +431,7 @@ color: white
      <rect>
       <x>930</x>
       <y>70</y>
-      <width>141</width>
+      <width>191</width>
       <height>21</height>
      </rect>
     </property>
@@ -478,7 +478,7 @@ color: white
     </property>
     <property name="font">
      <font>
-      <pointsize>10</pointsize>
+      <pointsize>1</pointsize>
      </font>
     </property>
     <property name="text">
@@ -492,7 +492,7 @@ color: white
      <x>0</x>
      <y>0</y>
      <width>1133</width>
-     <height>21</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuSettings">

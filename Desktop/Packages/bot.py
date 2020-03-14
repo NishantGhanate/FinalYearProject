@@ -24,6 +24,7 @@ class Bot:
             return False
 
     def sendImageTelegram(self,imagePath):
+        print('Sending image = {}'.format(imagePath))
         image = open(imagePath, 'rb')
         if self.chat_id != None and imagePath != None:
             self.bot.send_photo(chat_id=self.chat_id, text='Motion captured' , photo=image)
@@ -34,7 +35,7 @@ class Bot:
 
 if __name__ == "__main__":
     bot = Bot()
-    ans = bot.verifyBot("851568417:AAH3cOtvVaJ9RATU3cmW8l9BGu2VAHCpMBA")
+    ans = bot.verifyBot("924942230:AAFa0HXAkVOFOLlCwNh2bG_W3GtV1wCT1zQ")
     print(ans)
-    ans = bot.sendImageTelegram("G:/Github/FinalYearProject/Desktop/Media/Images/Friday 11 October 2019 07-02-29-PM.jpg")
+    ans = bot.sendImageTelegram("C:/Users/Nishant/Pictures/Camera Roll/coin.jpg")
     print(ans)

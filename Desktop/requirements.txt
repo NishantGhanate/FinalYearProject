@@ -4,6 +4,4 @@ opencv-contrib-python
 asyncio
 firebase_admin
 numpy
-json
-http
-telegram
+python-telegram-bot

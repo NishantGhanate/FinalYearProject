@@ -72,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
     if (user != null) {
       var route = new MaterialPageRoute(
           builder: (context) => ProfilePage(user: user));
-      Navigator.of(context).push(route);
+      Navigator.of(context).pushReplacement(route);
     }
   }
 

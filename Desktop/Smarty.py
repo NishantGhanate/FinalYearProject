@@ -69,7 +69,7 @@ class SmartSystemUI(QtWidgets.QMainWindow):
         self.presentFrame = ''
 
         # Read write user config , load user.json file 
-        userData = self.rdConfig(data='None',mode='r')
+        userData = self.rdConfig(mode='r')
         if userData != None:
             if 'uid' in userData :
                 self.lineEditUid.setText(userData['uid'])
@@ -192,7 +192,7 @@ class SmartSystemUI(QtWidgets.QMainWindow):
         
         diff = cv2.absdiff(self.pastFrame,self.presentFrame)
         diff = diff.sum()
-        print(' diff = {} ,  threshold = {} '.format(diff,self.threshold))
+        # print(' diff = {} ,  threshold = {} '.format(diff,self.threshold))
         currentTime =  datetime.now() 
 
         if diff > self.threshold  and currentTime.second != self.timeToday.second :
@@ -209,11 +209,11 @@ class SmartSystemUI(QtWidgets.QMainWindow):
             self.logsWidget('Image saved = {}\n'.format(capturedImage) )
            
             if self.mode :
-                self.notifyUser(capturedImage,timestampDay)
+                await self.notifyUser(capturedImage,timestampDay)
                 # self.__loop.run_until_complete(self.notifyUser(capturedImage,timestampDay))
         self.pastFrame , self.presentFrame  = self.presentFrame , erosion
                      
-    def notifyUser(self,capturedImage,timestampDay):
+    async def notifyUser(self,capturedImage,timestampDay):
         if self.getPingTest():
             if self.userExists:
                 self.Firebase.setImageFireStore(capturedImage,timestampDay)
@@ -245,22 +245,21 @@ class SmartSystemUI(QtWidgets.QMainWindow):
                 if self.userExists:
                     self.logsWidget('User Verified =  '+ str(uid))
                     self.labelMode.setText('STATUS : ONLINE ') 
-                    Data = {'uid' : uid}
-                    self.rdConfig(data = Data , mode='w')
+                    self.rdConfig(mode='w')
                 else:
                     self.userExists = False
                     self.logsWidget('Invalid UID : '+ str(uid))               
         else:
             self.userExists = False
             timestampDay =  datetime.now().strftime("%A, %d. %B %Y %I:%M:%S %p")
-            self.logsWidget('Please check your internet connection '.format(timestampDay)) 
+            self.logsWidget('Please check your internet connection = {}'.format(timestampDay)) 
    
     def verifyTelegram(self):
         token = self.lineEditToken.text()
-        valid = re.search('^[0-9]{9}:[a-zA-Z0-9]{34}',token)    
+        # valid = re.search('^[0-9]{9}:[a-zA-Z0-9]{34}',token)    
         self.logsWidget('Verifying token please wait ....')
-        print(valid)
-        if not valid :
+        print(token)
+        if len(token) < 10 :
             self.logsWidget('Invalid Token : '+ str(token))
             return 
         if  self.getPingTest():
@@ -268,8 +267,7 @@ class SmartSystemUI(QtWidgets.QMainWindow):
             print(self.telegramExists)
             if self.telegramExists:
                     self.logsWidget('Token Verified {} : '.format(token))
-                    Data = {'token' : token}
-                    self.rdConfig(data = Data , mode='w')
+                    self.rdConfig(mode='w')
             else:
                 self.telegramExists = False
                 self.logsWidget('Invalid Token : '+ str(token)) 
@@ -313,20 +311,15 @@ class SmartSystemUI(QtWidgets.QMainWindow):
 
         
     # ReadWrite user congig jsON                   
-    def rdConfig(self,data,mode):
+    def rdConfig(self,mode):
         # print(data)
-        uid = ''
-        token = ''
-        if 'uid' in data :
-            uid = data['uid']
-        if 'token' in data:
-            token = data['token']
+        uid = self.lineEditUid.text()
+        token = self.lineEditToken.text()
          
         Data = {'token' : token , 'uid' : uid } 
         try:
             if mode == 'w':
                 with open(USER_CONFIG, 'w') as f:  # writing JSON object
-                    # print(data)
                     json.dump(Data, f)
             if mode == 'r':
                 with open(USER_CONFIG, 'r') as f:
